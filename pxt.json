@@ -4,13 +4,18 @@
     "description": "",
     "dependencies": {
         "core": "*",
-        "motion": "*"
+        "motion": "*",
+        "ctrlx": "*"
     },
     "files": [
         "README.md",
         "constants.ts",
         "main.blocks",
-        "main.ts"
+        "main.ts",
+        "motion-config.json",
+        "pins-config.json",
+        "motion.ts",
+        "pins.ts"
     ],
     "testFiles": [
         "test.ts"
