@@ -6,7 +6,7 @@
     <title>Integration example</title>
     <script type="text/javascript" src="/tiger/embed.js"></script>
     <script type="text/javascript">
-        const token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDI4Mjg4MDIsImlhdCI6MTYwMjgwMDAwMiwiaWQiOiIxMDAxIiwibmFtZSI6ImJvc2NocmV4cm90aCIsIm5vbmNlIjoiNjMzZTI2YzEtN2YyNi00NDkwLTkwNmItZTlkYzkwZjNkMmI1IiwicGxjaGFuZGxlIjowLCJzY29wZSI6WyJyZXhyb3RoLWRldmljZS5hbGwucnd4IiwicmV4cm90aC1hdXRvbWF0aW9uLmRhdGFsYXllci54Il19.eAkB4VyCQdK8XRoUJEESGRBtHp_ofXW9rLwmOEQ9u6zy1VmFapLTBnLDbCTUdSeR5h7v2d_lWPgGJK6h1iO4b8INHdhQNXwclkOdNZREgFFDtY3OWc8UFHmLnfPGNtIwNim2OVA06c5k2_aSG7k3J7O5t9n5wtTVskYNZz1aYuNrdkaqX7gXw4piSt5EDOewL0TFslcdN3aw2OzFyi3ro91InGu2jFWBW-IFn8nui5Cy14dqOlrxOdBFqOvJ18hSQYbAlWclFBQ18NVIEXKYck9628-n1P8azniOID16IWtevhHFSI1fTO6U-KP8aM9QTnP3Q-PR7ufC-12mBVXXaUld719AvHzDOT3a_n0xesvp9YrghPZWNiKgq6U4U7_k-xfNiB4miIBtbW3dlbNRYuOq9MBhERnPpfET7qkJSpF4hvQJEBz5HOcnDBgncVW9VCiwkszdW2juHMNZQ_aGKOUivBC1rs27XyOBbDeJ8lB0ufA_7wWJp6r0O2Gzuc7RfxmlUdw_0tfKM1cIER7fZ7hsUsTAI9sXvWb0xdDXqBN1GKy_VMcCgoY10rn2ZLDSL5sSiwtb_QSg49wGm3OUvK6IoZ9GM38Yo-Gf9ENOz00EurJDvEiNdk3Isk3WWq0wksSukbS2H4gmYUXSKvzx8FaMn4uCCtC3tx7bjUnO4JA';
+        const token = window.sessionStorage.getItem('idm_token');
         let workspace;
 
         const onresize = function (e) {

@@ -9,7 +9,6 @@
     },
     "files": [
         "README.md",
-        "constants.ts",
         "main.blocks",
         "main.ts",
         "motion-config.json",
