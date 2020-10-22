@@ -4,16 +4,32 @@
 <head>
     <meta charset="utf-8">
     <title>Integration example</title>
+    <link rel="stylesheet" href="/tiger/semantic.css">
     <script type="text/javascript" src="/tiger/embed.js"></script>
     <script type="text/javascript">
+        const baseProjectId = /\/.*\/(.*)\/.*/.exec(location.pathname)[1];
         const token = window.sessionStorage.getItem('idm_token');
-        let workspace;
+        let workspace, blocksInfo, project;
+        const getTemplateProject = (id, name) => {
+            const timestamp = new Date().getTime() / 1000;
+            return {
+                //".cloudheader.json": "{\"blobId\":\"" + id + "\",\"cloudSync\":true,\"blobCurrent\":false,\"blobVersion\":1,\"name\":\"" + name + "\",\"id\":\"" + id + "\",\"pubId\":\"\",\"pubCurrent\":false,\"saveId\":{},\"target\":\"tiger\",\"recentUse\":" + timestamp + ",\"modificationTime\":" + timestamp + ",\"path\":\"" + name + "\",\"board\":\"ctrlx\",\"_id\":\"header--" + id + "\",\"_rev\":\"1-871fac6deae68cf8dcce8a3f2e252cc4\",\"githubCurrent\":false,\"editor\":\"tsprj\",\"targetVersion\":\"0.0.0\",\"version\":1}",
+                "README.md": " ",
+                "main.blocks": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"pxt-on-start\" x=\"0\" y=\"0\"/></xml>",
+                "main.ts": "\n",
+                "motion-config.json": "{\n    \"axes\": [],\n    \"kins\": [],\n    \"points\": []\n}",
+                "motion.ts": "// no instances from config...",
+                "pins-config.json": "{\n    \"pins\": []\n}",
+                "pins.ts": "// no instances from config...",
+                "pxt.json": "{\n    \"name\": \"" + name + "\",\n    \"description\": \"\",\n    \"baseConfig\": \"handlingkit\",\n    \"dependencies\": {\n        \"core\": \"*\",\n        \"motion\": \"*\",\n        \"ctrlx\": \"*\",\n        \"handlingkit\": \"workspace:" + baseProjectId + "\"\n    },\n    \"files\": [\n        \"main.blocks\",\n        \"main.ts\",\n        \"README.md\",\n        \"motion-config.json\",\n        \"pins-config.json\",\n        \"motion.ts\",\n        \"pins.ts\"\n    ],\n    \"preferredEditor\": \"tsprj\"\n}\n"
+            }
+        };
 
         const onresize = function (e) {
             const blocklyArea = document.getElementById('blocksColumn');
             const blocklyDiv = document.getElementById('blocks');
-            blocklyDiv.style.width = 'calc(' + blocklyArea.offsetWidth + 'px - 2rem)';
-            blocklyDiv.style.height = 'calc(' + blocklyArea.offsetHeight + 'px - 2rem)';
+            blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
+            blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
             Blockly.svgResize(workspace);
         };
         window.addEventListener('resize', onresize, false);
@@ -27,9 +43,25 @@
                     mainPkg: pxt.runner.mainPkg
                 }
             }
+            const baseDownloadPackageAsync = pxt.runner.mainPkg.host().downloadPackageAsync;
+            pxt.runner.mainPkg.host().downloadPackageAsync = (pkg, dependencies) => {
+                return baseDownloadPackageAsync(pkg, dependencies).catch((e) => {
+                    if (pkg.verProtocol() === 'workspace') {
+                        return pxt.Cloud.privateGetAsync(pkg.verArgument() + '/text', true).then((projectJson) =>
+                            pkg._editorPkg = { files: projectJson }
+                        );
+                    } else {
+                        throw e;
+                    }
+                });
+            };
             pxt.editor.initEditorExtensionsAsync().then(() => pxt.Cloud.privateGetAsync('/list', true).then((res) => {
                 const select = document.getElementById('projects');
-                res.pkgs.forEach((pkg) => {
+                const placeholder = document.createElement('option');
+                placeholder.disabled = placeholder.selected = placeholder.hidden = true;
+                placeholder.text = 'Select project...';
+                select.add(placeholder);
+                res.pkgs.filter((pkg) => pkg.header.baseConfig === baseProjectId).forEach((pkg) => {
                     const option = document.createElement('option');
                     option.text = option.value = pkg.path;
                     select.add(option);
@@ -37,10 +69,21 @@
             }));
         });
 
+        function newProject() {
+            const id = pxt.Util.guidGen();
+            pxt.Cloud.privatePostAsync(id, getTemplateProject(id, 'testinger'), true).done();
+        }
+
         function saveProject() {
-            pxt.runner.mainPkg.
-                opts.fileSystem['main.blocks'] = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace, true));
-            // TODO pxt.Cloud.privatePostAsync(document.getElementById('projects').value, , true).done();
+            project['main.blocks'] = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace, true));
+            pxt.blocks.compileAsync(workspace, blocksInfo).then((compilationResult) => {
+                project['main.ts'] = compilationResult.source;
+                pxt.Cloud.privatePostAsync(document.getElementById('projects').value, project, true).done();
+            });
+        }
+
+        function deleteProject() {
+            pxt.Cloud.privateDeleteAsync(document.getElementById('projects').value).done();
         }
 
         function openProject() {
@@ -53,16 +96,17 @@
                 await pxt.runner.mainPkg.host().downloadPackageAsync(pxt.runner.mainPkg, Object.keys(JSON.parse(projectJson[pxt.CONFIG_NAME]).dependencies));
                 pxt.runner.mainPkg._editorPkg.setFiles(projectJson);
                 await pxt.runner.mainPkg.installAllAsync();
+                project = projectJson;
 
                 const opts = await pxt.runner.mainPkg.getCompileOptionsAsync();
                 const program = pxtc.getTSProgram(opts);
 
-                const blocksInfo = pxtc.getBlocksInfo(pxtc.getApiInfo(program, opts.jres));
+                blocksInfo = pxtc.getBlocksInfo(pxtc.getApiInfo(program, opts.jres));
                 blocksInfo.blocks.map((b) => b.attributes.paramFieldEditor).filter((pfe) => !!pfe).forEach((pfe) =>
                     Object.keys(pfe).filter((k) => pfe[k] === 'configInstance').forEach((k) => delete pfe[k])
                 );
                 pxt.blocks.initializeAndInject(blocksInfo);
-                opts.fileSystem['main.blocks'] = pxtc.decompiler.decompileToBlocks(blocksInfo, program.getSourceFile('main.ts'), { generateSourceMap: true }).outfiles['main.blocks'];
+                project['main.blocks'] = pxtc.decompiler.decompileToBlocks(blocksInfo, program.getSourceFile('main.ts'), { generateSourceMap: true }).outfiles['main.blocks'];
 
                 /*opts.trace = true;
                 opts.breakpoints = true;
@@ -73,23 +117,33 @@
                     move: { scrollbars: true }, zoom: { enabled: true, wheel: true, startScale: 0.5 }, readOnly: false, renderer: 'pxt', toolbox: toolbox
                 });
 
-                const xml = Blockly.Xml.textToDom(opts.fileSystem['main.blocks']);
+                const xml = Blockly.Xml.textToDom(project['main.blocks']);
                 pxt.blocks.domToWorkspaceNoEvents(xml, workspace);
                 workspace.cleanUp();
 
-                pxt.blocks.compileAsync(workspace, blocksInfo).then((bres) => {
-                    onresize();
-                });
+                // pxt.blocks.compileAsync(workspace, blocksInfo).then((bres) => {
+                onresize();
+                // });
             });
         }
     </script>
 </head>
 
-<body style="height: 100%; margin: 0">
-    <select id="projects" onchange="openProject()">
-    </select>
-    <button onclick="saveProject()">Save</button>
-    <div id="content" style="height: 100%">
+<body class="ui segment" style="height: 100%; margin: 0">
+    <div class="ui segment">
+        <select id="projects" class="ui dropdown" onchange="openProject()">
+        </select>
+        <button class="ui button icon icon-and-text" onclick="newProject()">
+            <i class="icon add icon-and-text"></i><span class="ui text">New</span>
+        </button>
+        <button class="ui button icon icon-and-text right floated green" onclick="saveProject()">
+            <i class="icon save icon-and-text"></i><span class="ui text">Save</span>
+        </button>
+        <button class="ui button icon icon-and-text right floated red" onclick="deleteProject()">
+            <i class="icon trash icon-and-text"></i><span class="ui text">Delete</span>
+        </button>
+    </div>
+    <div id="content" class="ui segment" style="height: calc(100% - 110px)">
         <div id="blocksColumn" style="width: 100%; height: 100%">
             <div id="blocks" style="position: absolute; padding: 0;"></div>
         </div>
