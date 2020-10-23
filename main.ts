@@ -1,1 +1,6 @@
-
+console.log("setting up bla")
+loops.pause(1000)
+console.log("setting up blub")
+loops.pause(1000)
+console.log("setting up blubber")
+loops.pause(1000)

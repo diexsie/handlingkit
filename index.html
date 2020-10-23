@@ -5,6 +5,47 @@
     <meta charset="utf-8">
     <title>Integration example</title>
     <link rel="stylesheet" href="/tiger/semantic.css">
+    <style type="text/css">
+        #blocks svg.blocklySvg {
+            background-color: transparent !important;
+        }
+
+        #header {
+            position: absolute;
+            z-index: 102;
+            width: 100%;
+            height: 16px;
+            content: '';
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+            background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDIxLjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxOTIwIDIwIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAxOTIwIDIwIiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPHJlY3QgZmlsbD0iIzAwMkI0OSIgd2lkdGg9IjQ1MiIgaGVpZ2h0PSIyMCIvPgo8cmVjdCB4PSI0NTIiIGZpbGw9IiNERjAwMjQiIHdpZHRoPSI4MiIgaGVpZ2h0PSIyMCIvPgo8cmVjdCB4PSI1MzQiIGZpbGw9IiM5MUYwRkYiIHdpZHRoPSIzNjUiIGhlaWdodD0iMjAiLz4KPHJlY3QgeD0iODk5IiBmaWxsPSIjNUE3QzkxIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwIi8+CjxyZWN0IHg9IjEwOTkiIGZpbGw9IiMwMENDRkYiIHdpZHRoPSI1MzYiIGhlaWdodD0iMjAiLz4KPHJlY3QgeD0iMTYzNSIgZmlsbD0iI0EzQkFDOCIgd2lkdGg9IjI4NSIgaGVpZ2h0PSIyMCIvPgo8L3N2Zz4=) !important;
+        }
+
+        #container {
+            top: 0;
+            transition: top 0.5s ease;
+        }
+
+        #container>.ui.segment {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            margin: 0;
+        }
+
+        #container h1 {
+            margin-bottom: 5rem;
+        }
+
+        .ui.menu,
+        .ui.menu.item {
+            border: 0;
+            box-shadow: unset;
+        }
+    </style>
     <script type="text/javascript" src="/tiger/embed.js"></script>
     <script type="text/javascript">
         const baseProjectId = /\/.*\/(.*)\/.*/.exec(location.pathname)[1];
@@ -13,15 +54,11 @@
         const getTemplateProject = (id, name) => {
             const timestamp = new Date().getTime() / 1000;
             return {
-                //".cloudheader.json": "{\"blobId\":\"" + id + "\",\"cloudSync\":true,\"blobCurrent\":false,\"blobVersion\":1,\"name\":\"" + name + "\",\"id\":\"" + id + "\",\"pubId\":\"\",\"pubCurrent\":false,\"saveId\":{},\"target\":\"tiger\",\"recentUse\":" + timestamp + ",\"modificationTime\":" + timestamp + ",\"path\":\"" + name + "\",\"board\":\"ctrlx\",\"_id\":\"header--" + id + "\",\"_rev\":\"1-871fac6deae68cf8dcce8a3f2e252cc4\",\"githubCurrent\":false,\"editor\":\"tsprj\",\"targetVersion\":\"0.0.0\",\"version\":1}",
+                ".cloudheader.json": "{\"name\":\"" + name + "\",\"id\":\"" + id + "\",\"baseConfig\":\"" + baseProjectId + "\",\"version\":0}",
                 "README.md": " ",
                 "main.blocks": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"pxt-on-start\" x=\"0\" y=\"0\"/></xml>",
                 "main.ts": "\n",
-                "motion-config.json": "{\n    \"axes\": [],\n    \"kins\": [],\n    \"points\": []\n}",
-                "motion.ts": "// no instances from config...",
-                "pins-config.json": "{\n    \"pins\": []\n}",
-                "pins.ts": "// no instances from config...",
-                "pxt.json": "{\n    \"name\": \"" + name + "\",\n    \"description\": \"\",\n    \"baseConfig\": \"handlingkit\",\n    \"dependencies\": {\n        \"core\": \"*\",\n        \"motion\": \"*\",\n        \"ctrlx\": \"*\",\n        \"handlingkit\": \"workspace:" + baseProjectId + "\"\n    },\n    \"files\": [\n        \"main.blocks\",\n        \"main.ts\",\n        \"README.md\",\n        \"motion-config.json\",\n        \"pins-config.json\",\n        \"motion.ts\",\n        \"pins.ts\"\n    ],\n    \"preferredEditor\": \"tsprj\"\n}\n"
+                "pxt.json": "{\n    \"name\": \"" + name + "\",\n    \"description\": \"\",\n    \"baseConfig\": \"handlingkit\",\n    \"dependencies\": {\n        \"core\": \"*\",\n        \"motion\": \"*\",\n        \"ctrlx\": \"*\",\n        \"handlingkit\": \"workspace:" + baseProjectId + "\"\n    },\n    \"files\": [\n        \"main.blocks\",\n        \"main.ts\",\n        \"README.md\"\n    ],\n    \"preferredEditor\": \"tsprj\"\n}\n"
             }
         };
 
@@ -35,6 +72,7 @@
         window.addEventListener('resize', onresize, false);
 
         ksRunnerReady(function () {
+            jQuery('.ui.dropdown').dropdown();
             pxt.Cloud.apiRoot = '/ide/api/';
             pxt.Cloud.localToken = 'Bearer ' + token;
             pxt.BrowserUtils.isLocalHost = () => true;
@@ -55,43 +93,47 @@
                     }
                 });
             };
-            pxt.editor.initEditorExtensionsAsync().then(() => pxt.Cloud.privateGetAsync('/list', true).then((res) => {
-                const select = document.getElementById('projects');
-                const placeholder = document.createElement('option');
-                placeholder.disabled = placeholder.selected = placeholder.hidden = true;
-                placeholder.text = 'Select project...';
-                select.add(placeholder);
-                res.pkgs.filter((pkg) => pkg.header.baseConfig === baseProjectId).forEach((pkg) => {
-                    const option = document.createElement('option');
-                    option.text = option.value = pkg.path;
-                    select.add(option);
-                });
-            }));
+            pxt.editor.initEditorExtensionsAsync().then(loadProjects);
         });
+
+        function loadProjects() {
+            const projects = document.getElementById('projects');
+            projects.innerHTML = '';
+            pxt.Cloud.privateGetAsync('list', true).then((res) => {
+                res.pkgs.filter((pkg) => pkg.header.baseConfig === baseProjectId).forEach((pkg) => {
+                    const item = document.createElement('a');
+                    item.classList.add('item');
+                    item.text = pkg.path;
+                    item.setAttribute('data-value', pkg.path);
+                    item.onclick = (e) => openProject(pkg.path);
+                    projects.appendChild(item);
+                });
+            })
+        }
 
         function newProject() {
             const id = pxt.Util.guidGen();
-            pxt.Cloud.privatePostAsync(id, getTemplateProject(id, 'testinger'), true).done();
+            pxt.Cloud.privatePostAsync(id, getTemplateProject(id, 'testinger'), true).then(loadProjects).then(() => openProject(id));
         }
 
         function saveProject() {
             project['main.blocks'] = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace, true));
             pxt.blocks.compileAsync(workspace, blocksInfo).then((compilationResult) => {
                 project['main.ts'] = compilationResult.source;
-                pxt.Cloud.privatePostAsync(document.getElementById('projects').value, project, true).done();
+                pxt.Cloud.privatePostAsync(JSON.parse(project['.cloudheader.json']).id, project, true).done();
             });
         }
 
         function deleteProject() {
-            pxt.Cloud.privateDeleteAsync(document.getElementById('projects').value).done();
+            pxt.Cloud.privateDeleteAsync(JSON.parse(project['.cloudheader.json']).id).then(loadProjects);
         }
 
-        function openProject() {
+        function openProject(id) {
             if (workspace) {
                 workspace.dispose();
                 pxt.blocks.cleanBlocks();
             }
-            pxt.Cloud.privateGetAsync(document.getElementById('projects').value + '/text', true).then(async (projectJson) => {
+            pxt.Cloud.privateGetAsync(id + '/text', true).then(async (projectJson) => {
                 pxt.runner.mainPkg._verspec = 'empty:tsprj';
                 await pxt.runner.mainPkg.host().downloadPackageAsync(pxt.runner.mainPkg, Object.keys(JSON.parse(projectJson[pxt.CONFIG_NAME]).dependencies));
                 pxt.runner.mainPkg._editorPkg.setFiles(projectJson);
@@ -108,13 +150,9 @@
                 pxt.blocks.initializeAndInject(blocksInfo);
                 project['main.blocks'] = pxtc.decompiler.decompileToBlocks(blocksInfo, program.getSourceFile('main.ts'), { generateSourceMap: true }).outfiles['main.blocks'];
 
-                /*opts.trace = true;
-                opts.breakpoints = true;
-                const lastCompileResult = pxtc.compile(opts);*/
-
                 const toolbox = '<xml><block type="controls_if"></block><block type="motion_Axis_move"></block></xml>';
                 workspace = Blockly.inject(document.getElementById('blocks'), {
-                    move: { scrollbars: true }, zoom: { enabled: true, wheel: true, startScale: 0.5 }, readOnly: false, renderer: 'pxt', toolbox: toolbox
+                    move: { scrollbars: false }, zoom: { enabled: true, wheel: true, startScale: 0.5 }, readOnly: false, renderer: 'pxt', toolbox: toolbox
                 });
 
                 const xml = Blockly.Xml.textToDom(project['main.blocks']);
@@ -126,26 +164,132 @@
                 // });
             });
         }
+
+        function setupProfile(id) {
+            document.getElementById('container').style.top = '-100%';
+        }
+
+        function runSetup() {
+            const consoleElement = document.getElementById('console');
+            const listener = (ev) => {
+                const msg = ev.data;
+                switch (msg.type) {
+                    case 'serial': consoleElement.textContent = msg.data; break;
+                    case 'bulkserial': consoleElement.textContent = msg.data[msg.data.length - 1].data; break;
+                }
+            };
+            window.addEventListener('message', listener, false);
+            let driver;
+            new Promise((resolve, reject) => {
+                driver = new pxsim.SimulatorDriver(document.getElementById('sim'), {
+                    onDebuggerBreakpoint: (brk) => {
+                        if (brk.exceptionMessage) {
+                            console.error('Runtime error:\n' + brk.stackframes.map((sf) => sf.funcInfo).map((fi) => `   at ${fi.functionName} (${fi.fileName}:${fi.line + 1}:${fi.column + 1})`).join('\n'));
+                            reject(new Error('Runtime error.'));
+                        }
+                    },
+                    onTopLevelCodeEnd: () => {
+                        driver.stop();
+                        resolve('Configuration finished.');
+                    }
+                });
+
+                pxt.Cloud.privateGetAsync(baseProjectId + '/text', true).then(async (projectJson) => {
+                    pxt.runner.mainPkg._verspec = 'empty:tsprj';
+                    await pxt.runner.mainPkg.host().downloadPackageAsync(pxt.runner.mainPkg, Object.keys(JSON.parse(projectJson[pxt.CONFIG_NAME]).dependencies));
+                    pxt.runner.mainPkg._editorPkg.setFiles(projectJson);
+                    await pxt.runner.mainPkg.installAllAsync();
+
+                    const opts = await pxt.runner.mainPkg.getCompileOptionsAsync();
+                    const compileResult = pxtc.compile({ ...opts, trace: true, breakpoints: true });
+                    driver.run(compileResult.outfiles[pxtc.BINARY_JS], { debug: true });
+                });
+            }).then((ret) => document.getElementById('container').style.top = '-200%').catch(handleError).finally(() => {
+                driver.removeEventListeners();
+                window.removeEventListener('message', listener);
+                pxt.runner.init();
+            });
+        }
+
+        function handleError(error) {
+            const errorElement = document.getElementById('error');
+            errorElement.firstChild.textContent = error.message;
+            errorElement.style.top = 0;
+        }
+
+        function run() {
+            pxt.runner.mainPkg.getCompileOptionsAsync().then((opts) =>
+                pxt.worker.getWorker(pxt.webConfig.workerjs).opAsync('compile', { options: { ...opts, target: { ...opts.target, isNative: true } } })
+            ).then((compileResult) => {
+                console.log(compileResult.outfiles[pxtc.BINARY_HEX]);
+                document.getElementById('container').style.top = '-300%';
+            }).catch(handleError);
+        }
+
+        function stop() {
+            document.getElementById('container').style.top = '-200%';
+        }
     </script>
 </head>
 
-<body class="ui segment" style="height: 100%; margin: 0">
-    <div class="ui segment">
-        <select id="projects" class="ui dropdown" onchange="openProject()">
-        </select>
-        <button class="ui button icon icon-and-text" onclick="newProject()">
-            <i class="icon add icon-and-text"></i><span class="ui text">New</span>
-        </button>
-        <button class="ui button icon icon-and-text right floated green" onclick="saveProject()">
-            <i class="icon save icon-and-text"></i><span class="ui text">Save</span>
-        </button>
-        <button class="ui button icon icon-and-text right floated red" onclick="deleteProject()">
-            <i class="icon trash icon-and-text"></i><span class="ui text">Delete</span>
-        </button>
+<body style="height: 100%; margin: 0; overflow: hidden;">
+    <div id="header"></div>
+    <div id="error" class="ui inverted segment"
+        style="width: 100%; height: 100%; position: absolute; top: -100%; background-color: #df0024;">
+        <h1>Error</h1>
     </div>
-    <div id="content" class="ui segment" style="height: calc(100% - 110px)">
-        <div id="blocksColumn" style="width: 100%; height: 100%">
-            <div id="blocks" style="position: absolute; padding: 0;"></div>
+    <div id="container" style="width: 100%; height: 100%; position: absolute;">
+        <div class="ui inverted segment" style="background-color: #002b49;">
+            <div style="text-align: center;">
+                <h1>Welcome to<br>Smart Function Kit<br>for Handling</h1>
+                <button class="massive inverted ui button" onclick="setupProfile(1)">Profile 1</button>
+                <button class="massive inverted ui button" onclick="setupProfile(2)">Profile 2</button>
+                <button class="massive inverted ui button" onclick="setupProfile(3)">Profile 3</button>
+            </div>
+        </div>
+        <div class="ui inverted segment" style="background-color: #91f0ff;">
+            <h1>Initialization process</h1>
+            <div id="console" style="display: none;">
+                <button class="massive inverted ui loading button">Loading</button>
+            </div>
+            <button id="setup" class="massive inverted ui button"
+                onclick="document.getElementById('console').style.display = 'unset'; this.style.display = 'none'; runSetup();">Setup</button>
+            <div id="sim" style="display: none;"></div>
+        </div>
+        <div class="ui inverted segment" style="background-color: #5a7c91;">
+            <div class="ui inverted menu" style="width: 100%; background-color: transparent;">
+                <div class="item">
+                    <div class="ui button" onclick="newProject()">New</div>
+                </div>
+                <div class="ui selection dropdown item" style="border: 0;">
+                    <input type="hidden" name="project">
+                    <i class="dropdown icon" style="padding-top: 1em;"></i>
+                    <div class="default text">Select project...</div>
+                    <div id="projects" class="inverted menu"></div>
+                </div>
+                <div class="item">
+                    <div class="ui buttons">
+                        <div class="ui positive button" onclick="saveProject()">Save</div>
+                        <div class="ui negative button" onclick="deleteProject()">Delete</div>
+                    </div>
+                </div>
+                <div class="right item">
+                    <div class="ui primary button" onclick="run()">
+                        Run</div>
+                </div>
+            </div>
+            <div id="content" class="ui inverted segment"
+                style="width: 100%; height: calc(100% - 6rem); background-color: transparent;">
+                <div id="blocksColumn" style="width: 100%; height: 100%;">
+                    <div id="blocks" style="position: absolute; padding: 0;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="ui inverted segment" style="background-color: #00ccff">
+            <div style="text-align: center;">
+                <h1>Program running...</h1>
+                <button class="massive inverted negative ui button" onclick="stop()">Stop</button>
+            </div>
         </div>
     </div>
 </body>
