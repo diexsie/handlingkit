@@ -10,6 +10,10 @@
             background-color: transparent !important;
         }
 
+        #blocks svg.blocklyFlyout {
+            z-index: 1;
+        }
+
         #header {
             position: absolute;
             z-index: 102;
@@ -103,7 +107,7 @@
                 res.pkgs.filter((pkg) => pkg.header.baseConfig === baseProjectId).forEach((pkg) => {
                     const item = document.createElement('a');
                     item.classList.add('item');
-                    item.text = pkg.path;
+                    item.text = pkg.header.name;
                     item.setAttribute('data-value', pkg.path);
                     item.onclick = (e) => openProject(pkg.path);
                     projects.appendChild(item);
@@ -113,7 +117,9 @@
 
         function newProject() {
             const id = pxt.Util.guidGen();
-            pxt.Cloud.privatePostAsync(id, getTemplateProject(id, 'testinger'), true).then(loadProjects).then(() => openProject(id));
+            const nameInput = document.getElementById('nameInput');
+            pxt.Cloud.privatePostAsync(id, getTemplateProject(id, nameInput.value), true).then(() => nameInput.value = '')
+                .then(loadProjects).then(() => openProject(id));
         }
 
         function saveProject() {
@@ -259,7 +265,10 @@
         <div class="ui inverted segment" style="background-color: #5a7c91;">
             <div class="ui inverted menu" style="width: 100%; background-color: transparent;">
                 <div class="item">
-                    <div class="ui button" onclick="newProject()">New</div>
+                    <div class="ui action input">
+                        <input id="nameInput" type="text" placeholder="New project name...">
+                        <div class="ui button" onclick="newProject()">Create</div>
+                    </div>
                 </div>
                 <div class="ui selection dropdown item" style="border: 0;">
                     <input type="hidden" name="project">
