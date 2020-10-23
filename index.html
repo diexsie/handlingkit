@@ -76,6 +76,10 @@
         window.addEventListener('resize', onresize, false);
 
         ksRunnerReady(function () {
+            const script = document.createElement("script");
+            script.src = 'https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/components/progress.min.js';
+            script.async = false;
+            document.body.appendChild(script);
             jQuery('.ui.dropdown').dropdown();
             pxt.Cloud.apiRoot = '/ide/api/';
             pxt.Cloud.localToken = 'Bearer ' + token;
@@ -180,8 +184,14 @@
             const listener = (ev) => {
                 const msg = ev.data;
                 switch (msg.type) {
-                    case 'serial': consoleElement.textContent = msg.data; break;
-                    case 'bulkserial': consoleElement.textContent = msg.data[msg.data.length - 1].data; break;
+                    case 'serial':
+                        consoleElement.textContent = msg.data;
+                        jQuery('.ui.progress').progress('increment');
+                        break;
+                    case 'bulkserial':
+                        consoleElement.textContent = msg.data[msg.data.length - 1].data;
+                        msg.data.forEach(() => jQuery('.ui.progress').progress('increment'));
+                        break;
                 }
             };
             window.addEventListener('message', listener, false);
@@ -255,11 +265,14 @@
         </div>
         <div class="ui inverted segment" style="background-color: #91f0ff;">
             <h1>Initialization process</h1>
-            <div id="console" style="display: none;">
-                <button class="massive inverted ui loading button">Loading</button>
+            <div id="progress" class="ui progress" style="width: 25rem; display: none;" data-value="0" data-total="4">
+                <div class="bar">
+                    <div class="progress" style="color: white;"></div>
+                </div>
+                <div id="console" class="label">Loading runtime...</div>
             </div>
             <button id="setup" class="massive inverted ui button"
-                onclick="document.getElementById('console').style.display = 'unset'; this.style.display = 'none'; runSetup();">Setup</button>
+                onclick="document.getElementById('progress').style.display = 'unset'; this.style.display = 'none'; runSetup();">Setup</button>
             <div id="sim" style="display: none;"></div>
         </div>
         <div class="ui inverted segment" style="background-color: #5a7c91;">
