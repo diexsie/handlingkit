@@ -277,12 +277,13 @@
                     xhttp.setRequestHeader("Authorization", "Bearer " + token);
                     xhttp.send();
                     const response = JSON.parse(xhttp.responseText);
-                    if (response.value === 'READY') {
+                    if (response.value !== 'BUSY') {
                         clearInterval(timer);
-                        document.getElementById('container').style.top = '-200%';
-                    } else if (response.value === 'ERROR') {
-                        clearInterval(timer);
-                        handleError(new Error('Script instance error.'));
+                        if (response.value === 'READY') {
+                            document.getElementById('container').style.top = '-200%';
+                        } else if (response.value === 'ERROR' || response.value === 'TERMINATED') {
+                            handleError(new Error('Script instance error.'));
+                        }
                     }
                 }, 1000);
 
