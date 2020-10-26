@@ -250,16 +250,54 @@
             errorElement.style.top = 0;
         }
 
+        let timer;
         function run() {
             pxt.runner.mainPkg.getCompileOptionsAsync().then((opts) =>
                 pxt.worker.getWorker(pxt.webConfig.workerjs).opAsync('compile', { options: { ...opts, target: { ...opts.target, isNative: true } } })
             ).then((compileResult) => {
-                console.log(compileResult.outfiles[pxtc.BINARY_HEX]);
+                const id = JSON.parse(project['.cloudheader.json']).id;
+                const baseUrl = 'https://localhost:8443/automation/api/v1.0/script/instances';
+                const xhttp = new XMLHttpRequest();
+
+                // create instance
+                xhttp.open("POST", baseUrl, false);
+                xhttp.setRequestHeader("Authorization", "Bearer " + token);
+                xhttp.send(JSON.stringify({ name: id, language: "python" }));
+                // abort/clear error on instance
+                xhttp.open("POST", `${baseUrl}/${id}/cmd/abort`, false);
+                xhttp.setRequestHeader("Authorization", "Bearer " + token);
+                xhttp.send();
+                // start target script content
+                xhttp.open("POST", `${baseUrl}/${id}/cmd/string`, false);
+                xhttp.setRequestHeader("Authorization", "Bearer " + token);
+                xhttp.send(JSON.stringify({ name: compileResult.outfiles[pxtc.BINARY_HEX] }));
+                // poll state
+                timer = setInterval(() => {
+                    xhttp.open("GET", `${baseUrl}/${id}/state/opstate`, false);
+                    xhttp.setRequestHeader("Authorization", "Bearer " + token);
+                    xhttp.send();
+                    const response = JSON.parse(xhttp.responseText);
+                    if (response.value === 'READY') {
+                        clearInterval(timer);
+                        document.getElementById('container').style.top = '-200%';
+                    } else if (response.value === 'ERROR') {
+                        clearInterval(timer);
+                        handleError(new Error('Script instance error.'));
+                    }
+                }, 1000);
+
                 document.getElementById('container').style.top = '-300%';
             }).catch(handleError);
         }
 
         function stop() {
+            clearInterval(timer);
+            const id = JSON.parse(project['.cloudheader.json']).id;
+            const baseUrl = 'https://localhost:8443/automation/api/v1.0/script/instances';
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", `${baseUrl}/${id}/cmd/abort`, false);
+            xhttp.setRequestHeader("Authorization", "Bearer " + token);
+            xhttp.send();
             document.getElementById('container').style.top = '-200%';
         }
     </script>
@@ -268,7 +306,7 @@
 <body style="height: 100%; margin: 0; overflow: hidden;">
     <div id="header"></div>
     <div id="error" class="ui inverted segment"
-        style="width: 100%; height: 100%; position: absolute; top: -100%; z-index: 1; background-color: #df0024;">
+        style="width: 100%; height: 100%; position: absolute; top: -100%; z-index: 100; background-color: #df0024;">
         <h1>Error</h1>
     </div>
     <div id="container" style="width: 100%; height: 100%; position: absolute;">
