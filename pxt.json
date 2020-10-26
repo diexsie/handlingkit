@@ -11,6 +11,7 @@
         "README.md",
         "main.blocks",
         "main.ts",
+        "profiles.json",
         "motion-config.json",
         "pins-config.json",
         "motion.ts",
@@ -24,5 +25,5 @@
     "supportedTargets": [
         "tiger"
     ],
-    "preferredEditor": "blocksprj"
+    "preferredEditor": "tsprj"
 }

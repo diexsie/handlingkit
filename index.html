@@ -26,7 +26,8 @@
             background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDIxLjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkViZW5lXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxOTIwIDIwIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAxOTIwIDIwIiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPHJlY3QgZmlsbD0iIzAwMkI0OSIgd2lkdGg9IjQ1MiIgaGVpZ2h0PSIyMCIvPgo8cmVjdCB4PSI0NTIiIGZpbGw9IiNERjAwMjQiIHdpZHRoPSI4MiIgaGVpZ2h0PSIyMCIvPgo8cmVjdCB4PSI1MzQiIGZpbGw9IiM5MUYwRkYiIHdpZHRoPSIzNjUiIGhlaWdodD0iMjAiLz4KPHJlY3QgeD0iODk5IiBmaWxsPSIjNUE3QzkxIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwIi8+CjxyZWN0IHg9IjEwOTkiIGZpbGw9IiMwMENDRkYiIHdpZHRoPSI1MzYiIGhlaWdodD0iMjAiLz4KPHJlY3QgeD0iMTYzNSIgZmlsbD0iI0EzQkFDOCIgd2lkdGg9IjI4NSIgaGVpZ2h0PSIyMCIvPgo8L3N2Zz4=) !important;
         }
 
-        #container {
+        #container,
+        #error {
             top: 0;
             transition: top 0.5s ease;
         }
@@ -54,17 +55,7 @@
     <script type="text/javascript">
         const baseProjectId = /\/.*\/(.*)\/.*/.exec(location.pathname)[1];
         const token = window.sessionStorage.getItem('idm_token');
-        let workspace, blocksInfo, project;
-        const getTemplateProject = (id, name) => {
-            const timestamp = new Date().getTime() / 1000;
-            return {
-                ".cloudheader.json": "{\"name\":\"" + name + "\",\"id\":\"" + id + "\",\"baseConfig\":\"" + baseProjectId + "\",\"version\":0}",
-                "README.md": " ",
-                "main.blocks": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"pxt-on-start\" x=\"0\" y=\"0\"/></xml>",
-                "main.ts": "\n",
-                "pxt.json": "{\n    \"name\": \"" + name + "\",\n    \"description\": \"\",\n    \"baseConfig\": \"handlingkit\",\n    \"dependencies\": {\n        \"core\": \"*\",\n        \"motion\": \"*\",\n        \"ctrlx\": \"*\",\n        \"handlingkit\": \"workspace:" + baseProjectId + "\"\n    },\n    \"files\": [\n        \"main.blocks\",\n        \"main.ts\",\n        \"README.md\"\n    ],\n    \"preferredEditor\": \"tsprj\"\n}\n"
-            }
-        };
+        let baseProject, workspace, blocksInfo, project;
 
         const onresize = function (e) {
             const blocklyArea = document.getElementById('blocksColumn');
@@ -101,7 +92,9 @@
                     }
                 });
             };
-            pxt.editor.initEditorExtensionsAsync().then(loadProjects);
+            pxt.editor.initEditorExtensionsAsync().then(() =>
+                pxt.Cloud.privateGetAsync(baseProjectId + '/text', true).then((projectJson) => baseProject = projectJson)
+            ).then(loadProjects);
         });
 
         function loadProjects() {
@@ -122,7 +115,13 @@
         function newProject() {
             const id = pxt.Util.guidGen();
             const nameInput = document.getElementById('nameInput');
-            pxt.Cloud.privatePostAsync(id, getTemplateProject(id, nameInput.value), true).then(() => nameInput.value = '')
+            const timestamp = new Date().getTime() / 1000;
+            const template = Object.assign({}, JSON.parse(baseProject['profiles.json']).template);
+            template[".cloudheader.json"].id = id;
+            template[".cloudheader.json"].baseConfig = baseProjectId;
+            template[".cloudheader.json"].name = template[pxt.CONFIG_NAME].name = nameInput.value;
+            template[pxt.CONFIG_NAME].dependencies.handlingkit = `workspace:${baseProjectId}`;
+            pxt.Cloud.privatePostAsync(id, JSON.stringify(template), true).then(() => nameInput.value = '')
                 .then(loadProjects).then(() => openProject(id));
         }
 
@@ -130,7 +129,7 @@
             project['main.blocks'] = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace, true));
             pxt.blocks.compileAsync(workspace, blocksInfo).then((compilationResult) => {
                 project['main.ts'] = compilationResult.source;
-                pxt.Cloud.privatePostAsync(JSON.parse(project['.cloudheader.json']).id, project, true).done();
+                pxt.Cloud.privatePostAsync(JSON.parse(project['.cloudheader.json']).id, project, true).catch(handleError);
             });
         }
 
@@ -157,10 +156,21 @@
                 blocksInfo.blocks.map((b) => b.attributes.paramFieldEditor).filter((pfe) => !!pfe).forEach((pfe) =>
                     Object.keys(pfe).filter((k) => pfe[k] === 'configInstance').forEach((k) => delete pfe[k])
                 );
-                pxt.blocks.initializeAndInject(blocksInfo);
+                pxt.blocks.initialize(blocksInfo);
                 project['main.blocks'] = pxtc.decompiler.decompileToBlocks(blocksInfo, program.getSourceFile('main.ts'), { generateSourceMap: true }).outfiles['main.blocks'];
 
-                const toolbox = '<xml><block type="controls_if"></block><block type="motion_Axis_move"></block></xml>';
+                const injectedBlocks = pxt.blocks.injectBlocks(blocksInfo);
+                const blocks = {};
+                injectedBlocks.forEach((bi) => {
+                    const ns = bi.attributes.blockNamespace ? bi.attributes.blockNamespace : bi.namespace;
+                    if (!(ns in blocks)) {
+                        blocks[ns] = [];
+                    }
+                    blocks[ns].push(bi.attributes.blockId);
+                });
+                // delete blocks['__internal'];
+                // const toolbox = `<xml>${Object.keys(blocks).map((ns) => `<category name="${ns}">${blocks[ns].map((bi) => `<block type="${bi}"></block>`)}</category>`)}</xml>`;
+                const toolbox = `<xml>${Object.keys(blocks).map((ns) => `<category name="${ns}">${blocks[ns].map((bi) => `<block type="${bi}"></block>`)}</category>`)}</xml>`;
                 workspace = Blockly.inject(document.getElementById('blocks'), {
                     move: { scrollbars: false }, zoom: { enabled: true, wheel: true, startScale: 0.5 }, readOnly: false, renderer: 'pxt', toolbox: toolbox
                 });
@@ -176,7 +186,15 @@
         }
 
         function setupProfile(id) {
-            document.getElementById('container').style.top = '-100%';
+            if (id === -1) {
+                handleError(new Error('Could not auto detect profile.'))
+            }
+            if (id !== -1) {
+                document.getElementById('container').style.top = '-100%';
+                const profile = JSON.parse(baseProject['profiles.json']).profiles[id];
+                ['motion-config.json', 'motion.ts', 'pins-config.json', 'pins.ts'].forEach((f) => baseProject[f] = profile[f]);
+                pxt.Cloud.privatePostAsync(baseProjectId, baseProject, true).catch(handleError);
+            }
         }
 
         function runSetup() {
@@ -196,7 +214,7 @@
             };
             window.addEventListener('message', listener, false);
             let driver;
-            new Promise((resolve, reject) => {
+            new Promise(async (resolve, reject) => {
                 driver = new pxsim.SimulatorDriver(document.getElementById('sim'), {
                     onDebuggerBreakpoint: (brk) => {
                         if (brk.exceptionMessage) {
@@ -210,16 +228,14 @@
                     }
                 });
 
-                pxt.Cloud.privateGetAsync(baseProjectId + '/text', true).then(async (projectJson) => {
-                    pxt.runner.mainPkg._verspec = 'empty:tsprj';
-                    await pxt.runner.mainPkg.host().downloadPackageAsync(pxt.runner.mainPkg, Object.keys(JSON.parse(projectJson[pxt.CONFIG_NAME]).dependencies));
-                    pxt.runner.mainPkg._editorPkg.setFiles(projectJson);
-                    await pxt.runner.mainPkg.installAllAsync();
+                pxt.runner.mainPkg._verspec = 'empty:tsprj';
+                await pxt.runner.mainPkg.host().downloadPackageAsync(pxt.runner.mainPkg, Object.keys(JSON.parse(baseProject[pxt.CONFIG_NAME]).dependencies));
+                pxt.runner.mainPkg._editorPkg.setFiles(baseProject);
+                await pxt.runner.mainPkg.installAllAsync();
 
-                    const opts = await pxt.runner.mainPkg.getCompileOptionsAsync();
-                    const compileResult = pxtc.compile({ ...opts, trace: true, breakpoints: true });
-                    driver.run(compileResult.outfiles[pxtc.BINARY_JS], { debug: true });
-                });
+                const opts = await pxt.runner.mainPkg.getCompileOptionsAsync();
+                const compileResult = pxtc.compile({ ...opts, trace: true, breakpoints: true });
+                driver.run(compileResult.outfiles[pxtc.BINARY_JS], { debug: true });
             }).then((ret) => document.getElementById('container').style.top = '-200%').catch(handleError).finally(() => {
                 driver.removeEventListeners();
                 window.removeEventListener('message', listener);
@@ -229,7 +245,7 @@
 
         function handleError(error) {
             const errorElement = document.getElementById('error');
-            errorElement.firstChild.textContent = error.message;
+            errorElement.lastChild.textContent = error.message;
             errorElement.style.top = 0;
         }
 
@@ -251,28 +267,33 @@
 <body style="height: 100%; margin: 0; overflow: hidden;">
     <div id="header"></div>
     <div id="error" class="ui inverted segment"
-        style="width: 100%; height: 100%; position: absolute; top: -100%; background-color: #df0024;">
+        style="width: 100%; height: 100%; position: absolute; top: -100%; z-index: 1; background-color: #df0024;">
         <h1>Error</h1>
     </div>
     <div id="container" style="width: 100%; height: 100%; position: absolute;">
         <div class="ui inverted segment" style="background-color: #002b49;">
             <div style="text-align: center;">
-                <h1>Welcome to<br>Smart Function Kit<br>for Handling</h1>
-                <button class="massive inverted ui button" onclick="setupProfile(1)">Profile 1</button>
-                <button class="massive inverted ui button" onclick="setupProfile(2)">Profile 2</button>
-                <button class="massive inverted ui button" onclick="setupProfile(3)">Profile 3</button>
+                <h1>Profile selection</h1>
+                <button class="massive inverted secondary ui button" onclick="setupProfile(-1)">Auto detect</button>
+                <button class="massive inverted ui button" onclick="setupProfile(0)">Profile 1</button>
+                <button class="massive inverted ui button" onclick="setupProfile(1)">Profile 2</button>
+                <button class="massive inverted ui button" onclick="setupProfile(2)">Profile 3</button>
             </div>
         </div>
         <div class="ui inverted segment" style="background-color: #91f0ff;">
             <h1>Initialization process</h1>
             <div id="progress" class="ui progress" style="width: 25rem; display: none;" data-value="0" data-total="4">
                 <div class="bar">
-                    <div class="progress" style="color: white;"></div>
+                    <div class="progress"></div>
                 </div>
-                <div id="console" class="label">Loading runtime...</div>
+                <div id="console" class="label" style="color: white;">Loading runtime...</div>
             </div>
-            <button id="setup" class="massive inverted ui button"
-                onclick="document.getElementById('progress').style.display = 'unset'; this.style.display = 'none'; runSetup();">Setup</button>
+            <div id="setup" style="text-align: center;">
+                <button class="massive inverted secondary ui button"
+                    onclick="document.getElementById('progress').style.display = 'unset'; document.getElementById('setup').style.display = 'none'; runSetup();">Setup</button>
+                <button class="massive inverted ui button"
+                    onclick="document.getElementById('container').style.top = '-200%';">Skip</button>
+            </div>
             <div id="sim" style="display: none;"></div>
         </div>
         <div class="ui inverted segment" style="background-color: #5a7c91;">
