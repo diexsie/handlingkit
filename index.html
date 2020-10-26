@@ -192,7 +192,7 @@
             if (id !== -1) {
                 document.getElementById('container').style.top = '-100%';
                 const profile = JSON.parse(baseProject['profiles.json']).profiles[id];
-                ['motion-config.json', 'motion.ts', 'pins-config.json', 'pins.ts'].forEach((f) => baseProject[f] = profile[f]);
+                ['motion-config.json', 'motion.ts', 'pins-config.json', 'pins.ts'].forEach((f) => baseProject[f] = f.endsWith('.json') ? JSON.stringify(profile[f]) : profile[f]);
                 pxt.Cloud.privatePostAsync(baseProjectId, baseProject, true).catch(handleError);
             }
         }
