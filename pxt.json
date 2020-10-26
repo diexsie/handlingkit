@@ -25,5 +25,5 @@
     "supportedTargets": [
         "tiger"
     ],
-    "preferredEditor": "blocksprj"
+    "preferredEditor": "tsprj"
 }
