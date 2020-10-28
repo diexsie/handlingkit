@@ -154,9 +154,9 @@
                 const program = pxtc.getTSProgram(opts);
 
                 blocksInfo = pxtc.getBlocksInfo(pxtc.getApiInfo(program, opts.jres));
-                blocksInfo.blocks.map((b) => b.attributes.paramFieldEditor).filter((pfe) => !!pfe).forEach((pfe) =>
-                    Object.keys(pfe).filter((k) => pfe[k] === 'configInstance').forEach((k) => delete pfe[k])
-                );
+                // blocksInfo.blocks.map((b) => b.attributes.paramFieldEditor).filter((pfe) => !!pfe).forEach((pfe) =>
+                //     Object.keys(pfe).filter((k) => pfe[k] === 'configInstance').forEach((k) => delete pfe[k])
+                // );
                 pxt.blocks.initializeAndInject(blocksInfo);
                 project['main.blocks'] = pxtc.decompiler.decompileToBlocks(blocksInfo, program.getSourceFile('main.ts'), { generateSourceMap: true }).outfiles['main.blocks'];
 
@@ -239,29 +239,29 @@
         }
 
         let timer;
+        const scriptInstancesUrl = 'https://localhost:8443/automation/api/v1.0/script/instances';
         function run() {
             pxt.runner.mainPkg.getCompileOptionsAsync().then((opts) =>
                 pxt.worker.getWorker(pxt.webConfig.workerjs).opAsync('compile', { options: { ...opts, target: { ...opts.target, isNative: true } } })
             ).then((compileResult) => {
                 const id = JSON.parse(project['.cloudheader.json']).id;
-                const baseUrl = 'https://localhost:8443/automation/api/v1.0/script/instances';
                 const xhttp = new XMLHttpRequest();
 
                 // create instance
-                xhttp.open("POST", baseUrl, false);
+                xhttp.open("POST", scriptInstancesUrl, false);
                 xhttp.setRequestHeader("Authorization", "Bearer " + token);
                 xhttp.send(JSON.stringify({ name: id, language: "python" }));
                 // abort/clear error on instance
-                xhttp.open("POST", `${baseUrl}/${id}/cmd/abort`, false);
+                xhttp.open("POST", `${scriptInstancesUrl}/${id}/cmd/abort`, false);
                 xhttp.setRequestHeader("Authorization", "Bearer " + token);
                 xhttp.send();
                 // start target script content
-                xhttp.open("POST", `${baseUrl}/${id}/cmd/string`, false);
+                xhttp.open("POST", `${scriptInstancesUrl}/${id}/cmd/string`, false);
                 xhttp.setRequestHeader("Authorization", "Bearer " + token);
                 xhttp.send(JSON.stringify({ name: compileResult.outfiles[pxtc.BINARY_HEX] }));
                 // poll state
                 timer = setInterval(() => {
-                    xhttp.open("GET", `${baseUrl}/${id}/state/opstate`, false);
+                    xhttp.open("GET", `${scriptInstancesUrl}/${id}/state/opstate`, false);
                     xhttp.setRequestHeader("Authorization", "Bearer " + token);
                     xhttp.send();
                     const response = JSON.parse(xhttp.responseText);
@@ -282,9 +282,8 @@
         function stop() {
             clearInterval(timer);
             const id = JSON.parse(project['.cloudheader.json']).id;
-            const baseUrl = 'https://localhost:8443/automation/api/v1.0/script/instances';
             const xhttp = new XMLHttpRequest();
-            xhttp.open("POST", `${baseUrl}/${id}/cmd/abort`, false);
+            xhttp.open("POST", `${scriptInstancesUrl}/${id}/cmd/abort`, false);
             xhttp.setRequestHeader("Authorization", "Bearer " + token);
             xhttp.send();
             document.getElementById('container').style.top = '-200%';
@@ -307,7 +306,7 @@
                 <button class="massive inverted ui button" onclick="setupProfile(1)">Profile 2</button>
                 <button class="massive inverted ui button" onclick="setupProfile(2)">Profile 3</button>
                 <button class="massive inverted ui button"
-                    onclick="document.getElementById('container').style.top = '-200%';">Skip</button>
+                    onclick="document.getElementById('container').style.top = '-100%';">Skip</button>
             </div>
         </div>
         <div class="ui inverted segment" style="background-color: #91f0ff;">
