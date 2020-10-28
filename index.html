@@ -44,7 +44,7 @@
         #container h1 {
             margin-bottom: 5rem;
         }
-        
+
         .ui.segment {
             border-radius: unset;
         }
@@ -255,10 +255,12 @@
                 xhttp.open("POST", scriptInstancesUrl, false);
                 xhttp.setRequestHeader("Authorization", "Bearer " + token);
                 xhttp.send(JSON.stringify({ name: id, language: "python" }));
-                // abort/clear error on instance
-                xhttp.open("POST", `${scriptInstancesUrl}/${id}/cmd/abort`, false);
-                xhttp.setRequestHeader("Authorization", "Bearer " + token);
-                xhttp.send();
+                if (xhttp.status !== 200) {
+                    // abort/clear error on instance
+                    xhttp.open("POST", `${scriptInstancesUrl}/${id}/cmd/abort`, false);
+                    xhttp.setRequestHeader("Authorization", "Bearer " + token);
+                    xhttp.send();
+                }
                 // start target script content
                 xhttp.open("POST", `${scriptInstancesUrl}/${id}/cmd/string`, false);
                 xhttp.setRequestHeader("Authorization", "Bearer " + token);
