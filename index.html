@@ -157,23 +157,11 @@
                 blocksInfo.blocks.map((b) => b.attributes.paramFieldEditor).filter((pfe) => !!pfe).forEach((pfe) =>
                     Object.keys(pfe).filter((k) => pfe[k] === 'configInstance').forEach((k) => delete pfe[k])
                 );
-                pxt.blocks.initialize(blocksInfo);
+                pxt.blocks.initializeAndInject(blocksInfo);
                 project['main.blocks'] = pxtc.decompiler.decompileToBlocks(blocksInfo, program.getSourceFile('main.ts'), { generateSourceMap: true }).outfiles['main.blocks'];
 
-                const injectedBlocks = pxt.blocks.injectBlocks(blocksInfo);
-                const blocks = {};
-                injectedBlocks.forEach((bi) => {
-                    const ns = bi.attributes.blockNamespace ? bi.attributes.blockNamespace : bi.namespace;
-                    if (!(ns in blocks)) {
-                        blocks[ns] = [];
-                    }
-                    blocks[ns].push(bi.attributes.blockId);
-                });
-                // delete blocks['__internal'];
-                // const toolbox = `<xml>${Object.keys(blocks).map((ns) => `<category name="${ns}">${blocks[ns].map((bi) => `<block type="${bi}"></block>`)}</category>`)}</xml>`;
-                const toolbox = `<xml>${Object.keys(blocks).map((ns) => `<category name="${ns}">${blocks[ns].map((bi) => `<block type="${bi}"></block>`)}</category>`)}</xml>`;
                 workspace = Blockly.inject(document.getElementById('blocks'), {
-                    move: { scrollbars: false }, zoom: { enabled: true, wheel: true, startScale: 0.5 }, readOnly: false, renderer: 'pxt', toolbox: toolbox
+                    move: { scrollbars: false }, zoom: { enabled: true, wheel: true, startScale: 0.5 }, readOnly: false, renderer: 'pxt', toolbox: baseProject['toolbox.xml']
                 });
 
                 const xml = Blockly.Xml.textToDom(project['main.blocks']);
@@ -318,6 +306,8 @@
                 <button class="massive inverted ui button" onclick="setupProfile(0)">Profile 1</button>
                 <button class="massive inverted ui button" onclick="setupProfile(1)">Profile 2</button>
                 <button class="massive inverted ui button" onclick="setupProfile(2)">Profile 3</button>
+                <button class="massive inverted ui button"
+                    onclick="document.getElementById('container').style.top = '-200%';">Skip</button>
             </div>
         </div>
         <div class="ui inverted segment" style="background-color: #91f0ff;">
