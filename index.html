@@ -101,6 +101,21 @@
             ).then(loadProjects);
         });
 
+        async function setupRunner(projectJson) {
+            pxt.runner.mainPkg._verspec = 'empty:tsprj';
+            await pxt.runner.mainPkg.host().downloadPackageAsync(pxt.runner.mainPkg, Object.keys(JSON.parse(projectJson[pxt.CONFIG_NAME]).dependencies));
+            pxt.runner.mainPkg._editorPkg = { files: projectJson }; //.setFiles(projectJson);
+            await pxt.runner.mainPkg.installAllAsync();
+            const opts = await pxt.runner.mainPkg.getCompileOptionsAsync();
+            const program = pxtc.getTSProgram(opts);
+            const blocksInfo = pxtc.getBlocksInfo(pxtc.getApiInfo(program, opts.jres));
+            // blocksInfo.blocks.map((b) => b.attributes.paramFieldEditor).filter((pfe) => !!pfe).forEach((pfe) =>
+            //     Object.keys(pfe).filter((k) => pfe[k] === 'configInstance').forEach((k) => delete pfe[k])
+            // );
+            pxt.blocks.initializeAndInject(blocksInfo);
+            return { opts, program, blocksInfo };
+        }
+
         function loadProjects() {
             const projects = document.getElementById('projects');
             projects.innerHTML = '';
@@ -112,8 +127,18 @@
                     item.setAttribute('data-value', pkg.path);
                     item.onclick = (e) => openProject(pkg.path);
                     projects.appendChild(item);
+                    jQuery(item).popup({
+                        position: 'right center',
+                        html: '<i class="notched circle loading icon green"></i> wait...',
+                        onShow: function (el) {
+                            pxt.Cloud.privateGetAsync(pkg.path + '/text', true).then(async (projectJson) => {
+                                await setupRunner(projectJson);
+                                this.html(pxt.blocks.render(projectJson['main.blocks'], { emPixels: 64, layout: 1 }));
+                            });
+                        },
+                    });
                 });
-            })
+            });
         }
 
         function newProject() {
@@ -148,20 +173,9 @@
                 pxt.blocks.cleanBlocks();
             }
             pxt.Cloud.privateGetAsync(id + '/text', true).then(async (projectJson) => {
-                pxt.runner.mainPkg._verspec = 'empty:tsprj';
-                await pxt.runner.mainPkg.host().downloadPackageAsync(pxt.runner.mainPkg, Object.keys(JSON.parse(projectJson[pxt.CONFIG_NAME]).dependencies));
-                pxt.runner.mainPkg._editorPkg.setFiles(projectJson);
-                await pxt.runner.mainPkg.installAllAsync();
                 project = projectJson;
 
-                const opts = await pxt.runner.mainPkg.getCompileOptionsAsync();
-                const program = pxtc.getTSProgram(opts);
-
-                blocksInfo = pxtc.getBlocksInfo(pxtc.getApiInfo(program, opts.jres));
-                // blocksInfo.blocks.map((b) => b.attributes.paramFieldEditor).filter((pfe) => !!pfe).forEach((pfe) =>
-                //     Object.keys(pfe).filter((k) => pfe[k] === 'configInstance').forEach((k) => delete pfe[k])
-                // );
-                pxt.blocks.initializeAndInject(blocksInfo);
+                const { program, blocksInfo } = await setupRunner(projectJson);
                 project['main.blocks'] = pxtc.decompiler.decompileToBlocks(blocksInfo, program.getSourceFile('main.ts'), { generateSourceMap: true }).outfiles['main.blocks'];
 
                 workspace = Blockly.inject(document.getElementById('blocks'), {
@@ -220,13 +234,7 @@
                         resolve('Configuration finished.');
                     }
                 });
-
-                pxt.runner.mainPkg._verspec = 'empty:tsprj';
-                await pxt.runner.mainPkg.host().downloadPackageAsync(pxt.runner.mainPkg, Object.keys(JSON.parse(baseProject[pxt.CONFIG_NAME]).dependencies));
-                pxt.runner.mainPkg._editorPkg.setFiles(baseProject);
-                await pxt.runner.mainPkg.installAllAsync();
-
-                const opts = await pxt.runner.mainPkg.getCompileOptionsAsync();
+                const { opts } = await setupRunner(baseProject);
                 const compileResult = pxtc.compile({ ...opts, trace: true, breakpoints: true });
                 driver.run(compileResult.outfiles[pxtc.BINARY_JS], { debug: true });
             }).then((ret) => document.getElementById('container').style.top = '-200%').catch(handleError).finally(() => {
@@ -339,7 +347,7 @@
                         <div class="ui button" onclick="newProject()">Create</div>
                     </div>
                 </div>
-                <div class="ui selection dropdown item" style="border: 0;">
+                <div class="ui selection dropdown item" style="border: 0; width: 25rem;">
                     <input type="hidden" name="project">
                     <i class="dropdown icon" style="padding-top: 1em;"></i>
                     <div class="default text">Select project...</div>
