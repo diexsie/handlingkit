@@ -59,7 +59,7 @@
     <script type="text/javascript">
         const baseProjectId = /\/.*\/(.*)\/.*/.exec(location.pathname)[1];
         const token = window.sessionStorage.getItem('idm_token');
-        let baseProject, workspace, blocksInfo, project;
+        let baseProject, workspace, lastBlocksInfo, project;
 
         const onresize = function (e) {
             const blocklyArea = document.getElementById('blocksColumn');
@@ -113,6 +113,7 @@
             //     Object.keys(pfe).filter((k) => pfe[k] === 'configInstance').forEach((k) => delete pfe[k])
             // );
             pxt.blocks.initializeAndInject(blocksInfo);
+            lastBlocksInfo = blocksInfo;
             return { opts, program, blocksInfo };
         }
 
@@ -157,7 +158,7 @@
 
         function saveProject() {
             project['main.blocks'] = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace, true));
-            pxt.blocks.compileAsync(workspace, blocksInfo).then((compilationResult) => {
+            pxt.blocks.compileAsync(workspace, lastBlocksInfo).then((compilationResult) => {
                 project['main.ts'] = compilationResult.source;
                 pxt.Cloud.privatePostAsync(JSON.parse(project['.cloudheader.json']).id, project, true).catch(handleError);
             });
