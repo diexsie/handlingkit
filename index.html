@@ -180,7 +180,8 @@
                 project['main.blocks'] = pxtc.decompiler.decompileToBlocks(blocksInfo, program.getSourceFile('main.ts'), { generateSourceMap: true }).outfiles['main.blocks'];
 
                 workspace = Blockly.inject(document.getElementById('blocks'), {
-                    move: { scrollbars: false }, zoom: { enabled: true, wheel: true, startScale: 0.5 }, readOnly: false, renderer: 'pxt', toolbox: baseProject['toolbox.xml']
+                    move: { scrollbars: false }, zoom: { enabled: true, wheel: true, startScale: 0.5 }, readOnly: false, renderer: 'pxt', toolbox: baseProject['toolbox.xml'],
+                    grid: { colour: "rgba(237, 237, 237, .3)", length: 7, snap: true, spacing: 45 }
                 });
 
                 const xml = Blockly.Xml.textToDom(project['main.blocks']);
@@ -316,11 +317,11 @@
         <div class="ui inverted segment" style="background-color: #002b49;">
             <div style="text-align: center;">
                 <h1>Profile selection</h1>
-                <button class="massive inverted secondary ui button" onclick="setupProfile(-1)">Auto detect</button>
-                <button class="massive inverted ui button" onclick="setupProfile(0)">Profile 1</button>
-                <button class="massive inverted ui button" onclick="setupProfile(1)">Profile 2</button>
-                <button class="massive inverted ui button" onclick="setupProfile(2)">Profile 3</button>
-                <button class="massive inverted ui button"
+                <button class="massive secondary ui button" onclick="setupProfile(-1)">Auto detect</button>
+                <button class="massive ui button" onclick="setupProfile(0)">Profile 1</button>
+                <button class="massive ui button" onclick="setupProfile(1)">Profile 2</button>
+                <button class="massive ui button" onclick="setupProfile(2)">Profile 3</button>
+                <button class="massive ui button"
                     onclick="document.getElementById('container').style.top = '-100%';">Skip</button>
             </div>
         </div>
@@ -333,9 +334,9 @@
                 <div id="console" class="label" style="color: white;">Loading runtime...</div>
             </div>
             <div id="setup" style="text-align: center;">
-                <button class="massive inverted secondary ui button"
+                <button class="massive secondary ui button"
                     onclick="document.getElementById('progress').style.display = 'unset'; document.getElementById('setup').style.display = 'none'; runSetup();">Setup</button>
-                <button class="massive inverted ui button"
+                <button class="massive ui button"
                     onclick="document.getElementById('container').style.top = '-200%';">Skip</button>
             </div>
             <div id="sim" style="display: none;"></div>
@@ -375,7 +376,7 @@
         <div class="ui inverted segment" style="background-color: #00ccff">
             <div style="text-align: center;">
                 <h1>Program running...</h1>
-                <button class="massive inverted negative ui button" onclick="stop()">Stop</button>
+                <button class="massive negative ui button" onclick="stop()">Stop</button>
             </div>
         </div>
     </div>
