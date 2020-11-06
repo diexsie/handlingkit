@@ -225,6 +225,7 @@
             let driver;
             new Promise(async (resolve, reject) => {
                 driver = new pxsim.SimulatorDriver(document.getElementById('sim'), {
+                    simUrl: pxt.webConfig.simUrl,
                     onDebuggerBreakpoint: (brk) => {
                         if (brk.exceptionMessage) {
                             console.error('Runtime error:\n' + brk.stackframes.map((sf) => sf.funcInfo).map((fi) => `   at ${fi.functionName} (${fi.fileName}:${fi.line + 1}:${fi.column + 1})`).join('\n'));
