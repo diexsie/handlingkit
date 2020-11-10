@@ -14,8 +14,8 @@
         "profiles.json",
         "motion-config.json",
         "pins-config.json",
-        "motion.ts",
-        "pins.ts",
+        "motion-instances.ts",
+        "pins-instances.ts",
         "index.html"
     ],
     "testFiles": [
