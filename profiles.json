@@ -65,7 +65,7 @@
 				"kins": [],
 				"points": []
 			},
-			"motion.ts": "namespace motion {\n\t//% fixedInstance whenUsed\n\texport const axis1 = motion.factory.createAxis('axis1', {\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0}, undefined);\n}",
+			"motion.ts": "namespace motion {\n\texport const config: any = {\"axes\":[{\"limits\":{\"position\":{\"min\":0,\"max\":0},\"velocity\":{\"min\":0,\"max\":0},\"acceleration\":{\"min\":0,\"max\":0},\"torque\":{\"min\":0,\"max\":0}},\"axisParams\":{\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0},\"id\":\"axis1\",\"address\":\"axis1\"}],\"kins\":[],\"points\":[]};\n\t//% fixedInstance whenUsed\n\texport const axis1 = motion.factory.createAxis('axis1', {\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0}, undefined);\n}",
 			"pins-config.json": {
 				"pins": []
 			},
@@ -138,7 +138,7 @@
 				"kins": [],
 				"points": []
 			},
-			"motion.ts": "namespace motion {\n\t//% fixedInstance whenUsed\n\texport const axis1 = motion.factory.createAxis('axis1', {\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0}, undefined);\n\t//% fixedInstance whenUsed\n\texport const axis2 = motion.factory.createAxis('axis2', {\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0}, undefined);\n\n}",
+			"motion.ts": "namespace motion {\n\texport const config: any = {\"axes\":[{\"limits\":{\"position\":{\"min\":0,\"max\":0},\"velocity\":{\"min\":0,\"max\":0},\"acceleration\":{\"min\":0,\"max\":0},\"torque\":{\"min\":0,\"max\":0}},\"axisParams\":{\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0},\"id\":\"axis1\",\"address\":\"axis1\"},{\"limits\":{\"position\":{\"min\":0,\"max\":0},\"velocity\":{\"min\":0,\"max\":0},\"acceleration\":{\"min\":0,\"max\":0},\"torque\":{\"min\":0,\"max\":0}},\"axisParams\":{\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0},\"id\":\"axis2\",\"address\":\"axis2\"}],\"kins\":[],\"points\":[]};\n\t//% fixedInstance whenUsed\n\texport const axis1 = motion.factory.createAxis('axis1', {\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0}, undefined);\n\t//% fixedInstance whenUsed\n\texport const axis2 = motion.factory.createAxis('axis2', {\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0}, undefined);\n\n}",
 			"pins-config.json": {
 				"pins": []
 			},
@@ -241,7 +241,7 @@
 				"kins": [],
 				"points": []
 			},
-			"motion.ts": "namespace motion {\n\t//% fixedInstance whenUsed\n\texport const axis1 = motion.factory.createAxis('axis1', {\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0}, undefined);\n\t//% fixedInstance whenUsed\n\texport const axis2 = motion.factory.createAxis('axis2', {\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0}, undefined);\n\t//% fixedInstance whenUsed\n\texport const axis3 = motion.factory.createAxis('axis3', {\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0}, undefined);\n}",
+			"motion.ts": "namespace motion {\n\texport const config: any = {\"axes\":[{\"limits\":{\"position\":{\"min\":0,\"max\":0},\"velocity\":{\"min\":0,\"max\":0},\"acceleration\":{\"min\":0,\"max\":0},\"torque\":{\"min\":0,\"max\":0}},\"axisParams\":{\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0},\"id\":\"axis1\",\"address\":\"axis1\"},{\"limits\":{\"position\":{\"min\":0,\"max\":0},\"velocity\":{\"min\":0,\"max\":0},\"acceleration\":{\"min\":0,\"max\":0},\"torque\":{\"min\":0,\"max\":0}},\"axisParams\":{\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0},\"id\":\"axis2\",\"address\":\"axis2\"},{\"limits\":{\"position\":{\"min\":0,\"max\":0},\"velocity\":{\"min\":0,\"max\":0},\"acceleration\":{\"min\":0,\"max\":0},\"torque\":{\"min\":0,\"max\":0}},\"axisParams\":{\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0},\"id\":\"axis3\",\"address\":\"axis3\"}],\"kins\":[],\"points\":[]};\n\t//% fixedInstance whenUsed\n\texport const axis1 = motion.factory.createAxis('axis1', {\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0}, undefined);\n\t//% fixedInstance whenUsed\n\texport const axis2 = motion.factory.createAxis('axis2', {\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0}, undefined);\n\t//% fixedInstance whenUsed\n\texport const axis3 = motion.factory.createAxis('axis3', {\"x\":0,\"y\":0,\"z\":0,\"xr\":0,\"yr\":0,\"zr\":0}, undefined);\n}",
 			"pins-config.json": {
 				"pins": []
 			},
