@@ -16,7 +16,8 @@
         "pins-config.json",
         "motion-instances.ts",
         "pins-instances.ts",
-        "index.html"
+        "index.html",
+        "toolbox.xml"
     ],
     "testFiles": [
         "test.ts"

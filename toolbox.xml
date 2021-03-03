@@ -1,0 +1,409 @@
+<xml><category name="loops"><block type="controls_repeat_ext">
+                    <value name="TIMES">
+                        <shadow type="math_whole_number">
+                            <field name="NUM">4</field>
+                        </shadow>
+                    </value>
+                </block>
+<block type="device_while">
+                    <value name="COND">
+                        <shadow type="logic_boolean"></shadow>
+                    </value>
+                </block>
+<block type="pxt_controls_for">
+                    <value name="VAR">
+                        <shadow type="variables_get_reporter">
+                            <field name="VAR">index</field>
+                        </shadow>
+                    </value>
+                    <value name="TO">
+                        <shadow type="math_whole_number">
+                            <field name="NUM">4</field>
+                        </shadow>
+                    </value>
+                </block>
+<block type="pxt_controls_for_of">
+                    <value name="VAR">
+                        <shadow type="variables_get_reporter">
+                            <field name="VAR">value</field>
+                        </shadow>
+                    </value>
+                    <value name="LIST">
+                        <shadow type="variables_get">
+                            <field name="VAR">list</field>
+                        </shadow>
+                    </value>
+                </block>
+<block type="device_forever" gap="8"></block>
+<block type="device_pause"><value name="pause"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">100</field></shadow></value></block></category>,<category name="logic"><block type="controls_if" gap="8">
+                    <value name="IF0">
+                        <shadow type="logic_boolean">
+                            <field name="BOOL">TRUE</field>
+                        </shadow>
+                    </value>
+                </block>
+<block type="controls_if" gap="8">
+                    <mutation else="1"></mutation>
+                    <value name="IF0">
+                        <shadow type="logic_boolean">
+                            <field name="BOOL">TRUE</field>
+                        </shadow>
+                    </value>
+                </block>
+<block type="logic_compare" gap="8">
+                    <value name="A">
+                        <shadow type="math_number">
+                            <field name="NUM">0</field>
+                        </shadow>
+                    </value>
+                    <value name="B">
+                        <shadow type="math_number">
+                            <field name="NUM">0</field>
+                        </shadow>
+                    </value>
+                </block>
+<block type="logic_compare">
+                    <field name="OP">LT</field>
+                    <value name="A">
+                        <shadow type="math_number">
+                            <field name="NUM">0</field>
+                        </shadow>
+                    </value>
+                    <value name="B">
+                        <shadow type="math_number">
+                            <field name="NUM">0</field>
+                        </shadow>
+                    </value>
+                </block>
+<block type="logic_compare" gap="8">
+                    <value name="A">
+                        <shadow type="text">
+                            <field name="TEXT"></field>
+                        </shadow>
+                    </value>
+                    <value name="B">
+                        <shadow type="text">
+                            <field name="TEXT"></field>
+                        </shadow>
+                    </value>
+                </block>
+<block type="logic_operation" gap="8">
+                    <field name="OP">AND</field>
+                </block>
+<block type="logic_operation" gap="8">
+                    <field name="OP">OR</field>
+                </block>
+<block type="logic_negate"></block>
+<block type="logic_boolean" gap="8">
+                    <field name="BOOL">TRUE</field>
+                </block>
+<block type="logic_boolean">
+                    <field name="BOOL">FALSE</field>
+                </block></category>,<category name="variables"></category>,<category name="maths"><block type="math_arithmetic" gap="8">
+                        <value name="A">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <value name="B">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <field name="OP">ADD</field>
+                    </block>
+<block type="math_arithmetic" gap="8">
+                        <value name="A">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <value name="B">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <field name="OP">MINUS</field>
+                    </block>
+<block type="math_arithmetic" gap="8">
+                        <value name="A">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <value name="B">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <field name="OP">MULTIPLY</field>
+                    </block>
+<block type="math_arithmetic" gap="8">
+                        <value name="A">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <value name="B">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <field name="OP">DIVIDE</field>
+                    </block>
+<block type="math_number" gap="8">
+                        <field name="NUM">0</field>
+                    </block>
+<block type="math_modulo">
+                        <value name="DIVIDEND">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <value name="DIVISOR">
+                            <shadow type="math_number">
+                                <field name="NUM">1</field>
+                            </shadow>
+                        </value>
+                    </block>
+<block type="math_op2" gap="8">
+                        <value name="x">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <value name="y">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <field name="op">min</field>
+                    </block>
+<block type="math_op2" gap="8">
+                        <value name="x">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <value name="y">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <field name="op">max</field>
+                    </block>
+<block type="math_op3">
+                        <value name="x">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                    </block>
+<block type="math_js_op">
+                        <field name="OP">sqrt</field>
+                        <value name="ARG0">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                    </block>
+<block type="math_js_round">
+                        <field name="OP">round</field>
+                        <value name="ARG0">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                    </block></category>,<category name="text"><block type="text"></block>
+<block type="text_length">
+                        <value name="VALUE">
+                            <shadow type="text">
+                                <field name="TEXT">Hello</field>
+                            </shadow>
+                        </value>
+                    </block>
+<block type="text_join">
+                        <mutation items="2"></mutation>
+                        <value name="ADD0">
+                            <shadow type="text">
+                                <field name="TEXT">Hello</field>
+                            </shadow>
+                        </value>
+                        <value name="ADD1">
+                            <shadow type="text">
+                                <field name="TEXT">World</field>
+                            </shadow>
+                        </value>
+                    </block>
+<block type="string_get"><value name="this"><shadow type="text" colour="#FFFFFF"><field name="TEXT">this</field></shadow></value><value name="pos"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block>
+<block type="string_compare"><value name="this"><shadow type="text" colour="#FFFFFF"><field name="TEXT">this</field></shadow></value><value name="that"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="string_substr"><value name="this"><shadow type="text" colour="#FFFFFF"><field name="TEXT">this</field></shadow></value><value name="start"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value><value name="length"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">10</field></shadow></value></block>
+<block type="string_isempty"><value name="this"><shadow type="text" colour="#FFFFFF"><field name="TEXT">this</field></shadow></value></block>
+<block type="string_indexof"><value name="this"><shadow type="text" colour="#FFFFFF"><field name="TEXT">this</field></shadow></value><value name="searchValue"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="string_includes"><value name="this"><shadow type="text" colour="#FFFFFF"><field name="TEXT">this</field></shadow></value><value name="searchValue"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="string_split"><value name="this"><shadow type="text" colour="#FFFFFF"><field name="TEXT">this</field></shadow></value><value name="separator"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="string_parsefloat"><value name="text"><shadow type="text" colour="#FFFFFF"><field name="TEXT">123</field></shadow></value></block>
+<block type="stringFromCharCode"><value name="code"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block></category>,<category name="arrays"><block type="variables_set" gap="8">
+                        <field name="VAR" variabletype="">list</field>
+                        <value name="VALUE">
+                            <block type="lists_create_with">
+                                <mutation items="2"></mutation>
+                                <value name="ADD0">
+                                    <shadow type="math_number">
+                                        <field name="NUM">0</field>
+                                    </shadow>
+                                </value>
+                                <value name="ADD1">
+                                    <shadow type="math_number">
+                                        <field name="NUM">1</field>
+                                    </shadow>
+                                </value>
+                            </block>
+                        </value>
+                    </block>
+<block type="variables_set">
+                        <field name="VAR" variabletype="">text list</field>
+                        <value name="VALUE">
+                            <block type="lists_create_with">
+                                <mutation items="3"></mutation>
+                                <value name="ADD0">
+                                    <shadow type="text">
+                                        <field name="TEXT">a</field>
+                                    </shadow>
+                                </value>
+                                <value name="ADD1">
+                                    <shadow type="text">
+                                        <field name="TEXT">b</field>
+                                    </shadow>
+                                </value>
+                                <value name="ADD2">
+                                    <shadow type="text">
+                                        <field name="TEXT">c</field>
+                                    </shadow>
+                                </value>
+                            </block>
+                        </value>
+                    </block>
+<block type="lists_create_with">
+                        <mutation items="0"></mutation>
+                    </block>
+<block type="lists_index_get">
+                        <value name="LIST">
+                            <block type="variables_get">
+                                <field name="VAR">list</field>
+                            </block>
+                        </value>
+                        <value name="INDEX">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                    </block>
+<block type="lists_index_set">
+                        <value name="INDEX">
+                            <shadow type="math_number">
+                                <field name="NUM">0</field>
+                            </shadow>
+                        </value>
+                        <value name="LIST">
+                            <block type="variables_get">
+                                <field name="VAR">list</field>
+                            </block>
+                        </value>
+                    </block>
+<block type="lists_length">
+                        <value name="VALUE">
+                            <block type="variables_get">
+                                <field name="VAR">list</field>
+                            </block>
+                        </value>
+                    </block>
+<block type="array_push"><value name="list"><block type="variables_get" colour="#FFFFFF"><field name="VAR">list</field></block></value></block>
+<block type="array_pop"><value name="list"><block type="variables_get" colour="#FFFFFF"><field name="VAR">list</field></block></value></block>
+<block type="array_reverse"><value name="list"><block type="variables_get" colour="#FFFFFF"><field name="VAR">list</field></block></value></block>
+<block type="array_shift"><value name="list"><block type="variables_get" colour="#FFFFFF"><field name="VAR">list</field></block></value></block>
+<block type="array_unshift"><value name="list"><block type="variables_get" colour="#FFFFFF"><field name="VAR">list</field></block></value></block>
+<block type="array_removeat"><value name="list"><block type="variables_get" colour="#FFFFFF"><field name="VAR">list</field></block></value><value name="index"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block>
+<block type="array_insertAt"><value name="list"><block type="variables_get" colour="#FFFFFF"><field name="VAR">list</field></block></value><value name="index"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block>
+<block type="array_indexof"><value name="list"><block type="variables_get" colour="#FFFFFF"><field name="VAR">list</field></block></value></block>
+<block type="array_unshift_statement"><value name="list"><block type="variables_get" colour="#FFFFFF"><field name="VAR">list</field></block></value></block>
+<block type="array_pop_statement"><value name="list"><block type="variables_get" colour="#FFFFFF"><field name="VAR">list</field></block></value></block>
+<block type="array_shift_statement"><value name="list"><block type="variables_get" colour="#FFFFFF"><field name="VAR">list</field></block></value></block>
+<block type="array_removeat_statement"><value name="list"><block type="variables_get" colour="#FFFFFF"><field name="VAR">list</field></block></value><value name="index"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block></category>,<category name="functions"></category>,<category name="Math"><block type="device_random"><value name="min"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value><value name="limit"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">10</field></shadow></value></block></category>,<category name="control"><block type="control_runInBackground"></block>
+<block type="control_exit"><value name="code"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block>
+<block type="control_pauseUntilMovementStopped"></block>
+<block type="control_pauseUntilAxisPositionPassed"><value name="pos"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block>
+<block type="control_pauseUntilPinValue"><value name="value"><shadow type="toggleHighLow" colour="#FFFFFF"><value name="high"><shadow type="logic_boolean" colour="#FFFFFF"><field name="BOOL">FALSE</field><mutation customfield="{&quot;decompileLiterals&quot;:&quot;true&quot;}"></mutation></shadow></value></shadow></value></block></category>,<category name="tools"><block type="tools_extract"><value name="prop"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="tools_createObj"><value name="str"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="tools_toString"></block>
+<block type="tools_toNumber"></block>
+<block type="tools_toBoolean"></block></category>,<category name="console"><block type="console_log" gap="8"><value name="value"><shadow type="text" colour="#FFFFFF"></shadow></value></block>
+<block type="console_log_value" gap="8"><value name="name"><shadow type="text" colour="#FFFFFF"><field name="TEXT">x</field></shadow></value><value name="value"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block></category>,<category name="DatalayerLib"><block type="DatalayerLib_browse"><value name="path"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="DatalayerLib_read"><value name="path"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="DatalayerLib_write"><value name="path"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="DatalayerLib_create"><value name="path"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="DatalayerLib_remove"><value name="path"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="DatalayerLib_readJson"><value name="path"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="DatalayerLib_writeJson"><value name="path"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="json"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="DatalayerLib_createJson"><value name="path"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="json"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block></category>,<category name="MotionLib"><block type="MotionLib_axsCmdPosAbs"><value name="axs"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="pos"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block>
+<block type="MotionLib_axsCmdPosAdd"><value name="axs"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="pos"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block>
+<block type="MotionLib_axsCmdPosRel"><value name="axs"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="pos"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block>
+<block type="MotionLib_axsCmdJogIncr"><value name="axs"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="dir"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="incr"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block>
+<block type="MotionLib_axsCmdJogCont"><value name="axs"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="dir"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_axsCmdPower"><value name="axs"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_axsCmdAbort"><value name="axs"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_axsCmdReset"><value name="axs"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_axsCmdAddToKin"><value name="axs"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_axsCmdRemoveFromKin"><value name="axs"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_axsCmdAddToGantry"><value name="slave"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="master"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_axsCmdRemoveFromGantry"><value name="slave"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_axsCmdInterrupt"><value name="axs"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_axsCmdContinue"><value name="axs"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_kinCmdMoveLinAbs"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_kinCmdMoveLinRel"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_kinCmdMoveDirectAbs"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_kinCmdMoveDirectRel"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_kinCmdJogIncr"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="incr"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block>
+<block type="MotionLib_kinCmdJogCont"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_kinCmdEnable"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_kinCmdDisable"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_kinCmdAbort"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_kinCmdReset"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_kinCmdInterrupt"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_kinCmdContinue"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_setOverride"><value name="obj"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="val"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block>
+<block type="MotionLib_setErrLevel"><value name="obj"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="errLevel"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_kinCmdBlend"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="d1"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value><value name="d2"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block>
+<block type="MotionLib_kinCmdBlendP"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_kinCmdPcsP"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_kinCmdPcsToolP"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_kinCmdMcsP"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_getAxsIpoValues"><value name="axs"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_getAxsActValues"><value name="axs"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_getAxsPlcOpenState"><value name="axs"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_getKinIpoValues"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_getKinIpoAddData"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_getKinIpoPos"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_getKinActPos"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_coordTransform"><value name="kin"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="coordSysIn"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="coordSysOut"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_getKinPlcOpenState"><value name="name"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_getCmdState"><value name="obj"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value><value name="id"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block>
+<block type="MotionLib_getCmdActId"><value name="obj"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_getCmdActSrcData"><value name="obj"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_getOverride"><value name="obj"><shadow type="text" colour="#FFFFFF"><field name="TEXT"></field></shadow></value></block>
+<block type="MotionLib_attachObj"></block>
+<block type="MotionLib_detachObj"></block></category>,<category name="motion"><block type="motion_Axis_value"><value name="this"><block type="variables_get" colour="#FFFFFF"><field name="VAR">this</field><mutation customfield="{&quot;property&quot;:&quot;axes&quot;}"></mutation></block></value></block>
+<block type="motion_Axis_move"><value name="this"><block type="variables_get" colour="#FFFFFF"><field name="VAR">this</field><mutation customfield="{&quot;property&quot;:&quot;axes&quot;}"></mutation></block></value><value name="value"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value><value name="velocity"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">100</field></shadow></value><value name="acceleration"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">100</field></shadow></value></block>
+<block type="motion_Axis_chainedMove"><value name="this"><block type="variables_get" colour="#FFFFFF"><field name="VAR">this</field><mutation customfield="{&quot;property&quot;:&quot;axes&quot;}"></mutation></block></value><value name="value"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value><value name="velocity"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">100</field></shadow></value><value name="acceleration"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">100</field></shadow></value></block>
+<block type="motion_Axis_moving"><value name="this"><block type="variables_get" colour="#FFFFFF"><field name="VAR">this</field><mutation customfield="{&quot;property&quot;:&quot;axes&quot;}"></mutation></block></value></block>
+<block type="motion_Axis_stop"><value name="this"><block type="variables_get" colour="#FFFFFF"><field name="VAR">this</field><mutation customfield="{&quot;property&quot;:&quot;axes&quot;}"></mutation></block></value></block>
+<block type="motion_Kinematic_values"><value name="this"><block type="variables_get" colour="#FFFFFF"><field name="VAR">this</field><mutation customfield="{&quot;property&quot;:&quot;kins&quot;}"></mutation></block></value></block>
+<block type="motion_Kinematic_move"><value name="this"><block type="variables_get" colour="#FFFFFF"><field name="VAR">this</field><mutation customfield="{&quot;property&quot;:&quot;kins&quot;}"></mutation></block></value><value name="values"><block type="lists_create_with" colour="#FFFFFF"><mutation items="2"></mutation><value name="ADD0"><shadow type="math_number"><field name="NUM">0</field></shadow></value><value name="ADD1"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block></value><value name="velocity"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">100</field></shadow></value><value name="acceleration"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">100</field></shadow></value></block>
+<block type="motion_Kinematic_chainedMove"><value name="this"><block type="variables_get" colour="#FFFFFF"><field name="VAR">this</field><mutation customfield="{&quot;property&quot;:&quot;kins&quot;}"></mutation></block></value><value name="values"><block type="lists_create_with" colour="#FFFFFF"><mutation items="2"></mutation><value name="ADD0"><shadow type="math_number"><field name="NUM">0</field></shadow></value><value name="ADD1"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block></value><value name="dist1"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">100</field></shadow></value><value name="dist2"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">100</field></shadow></value><value name="velocity"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">100</field></shadow></value><value name="acceleration"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">100</field></shadow></value></block>
+<block type="motion_Kinematic_moving"><value name="this"><block type="variables_get" colour="#FFFFFF"><field name="VAR">this</field><mutation customfield="{&quot;property&quot;:&quot;kins&quot;}"></mutation></block></value></block>
+<block type="motion_Kinematic_stop"><value name="this"><block type="variables_get" colour="#FFFFFF"><field name="VAR">this</field><mutation customfield="{&quot;property&quot;:&quot;kins&quot;}"></mutation></block></value></block>
+<block type="motion_moveJumpAbsolute"><value name="pos"><block type="lists_create_with" colour="#FFFFFF"><mutation items="2"></mutation><value name="ADD0"><shadow type="math_number"><field name="NUM">0</field></shadow></value><value name="ADD1"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block></value><value name="vel"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value><value name="acc"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value><value name="startHeight"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value><value name="endHeight"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value><value name="maxHeight"><shadow type="math_number" colour="#FFFFFF"><field name="NUM">0</field></shadow></value></block></category>,<category name="pins"><block type="device_get_digital_pin" gap="8"></block>
+<block type="device_set_digital_pin"><value name="value"><shadow type="toggleHighLow" colour="#FFFFFF"><value name="high"><shadow type="logic_boolean" colour="#FFFFFF"><field name="BOOL">FALSE</field><mutation customfield="{&quot;decompileLiterals&quot;:&quot;true&quot;}"></mutation></shadow></value></shadow></value></block>
+<block type="pinsonevent" gap="8"></block>
+<block type="device_get_analog_pin" gap="8"></block>
+<block type="device_set_analog_pin" gap="8"><value name="value"><shadow type="math_number_minmax" colour="#FFFFFF"><field name="SLIDER">1023</field><mutation min="0" max="1023" label="Value"></mutation></shadow></value></block></category></xml>
