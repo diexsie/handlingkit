@@ -174,7 +174,7 @@
                 pxt.blocks.cleanBlocks();
             }
             pxt.Cloud.privateGetAsync(id + '/text', true).then(async (projectJson) => {
-                project = projectJson;
+                project = { ...projectJson };
 
                 const { program, blocksInfo } = await setupRunner(projectJson);
                 project['main.blocks'] = pxtc.decompiler.decompileToBlocks(blocksInfo, program.getSourceFile('main.ts'), { generateSourceMap: true }).outfiles['main.blocks'];
