@@ -177,7 +177,9 @@
                 project = { ...projectJson };
 
                 const { program, blocksInfo } = await setupRunner(projectJson);
-                project['main.blocks'] = pxtc.decompiler.decompileToBlocks(blocksInfo, program.getSourceFile('main.ts'), { generateSourceMap: true }).outfiles['main.blocks'];
+                if (JSON.parse(project['pxt.json']).preferredEditor !== "blocksprj") {
+                    project['main.blocks'] = pxtc.decompiler.decompileToBlocks(blocksInfo, program.getSourceFile('main.ts'), { generateSourceMap: true }).outfiles['main.blocks'];
+                }
 
                 workspace = Blockly.inject(document.getElementById('blocks'), {
                     move: { scrollbars: false }, zoom: { enabled: true, wheel: true, startScale: 0.5 }, readOnly: false, renderer: 'pxt', toolbox: baseProject['toolbox.xml'],
