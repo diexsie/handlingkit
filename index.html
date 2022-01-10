@@ -103,6 +103,9 @@
 
         async function setupRunner(projectJson) {
             pxt.runner.mainPkg._verspec = 'empty:tsprj';
+            pxt.runner.mainPkg.isLoaded = false;
+            Object.keys(pxt.runner.mainPkg.deps).filter((d) => d !== 'this' && typeof pxt.runner.mainPkg.deps[d] === 'object')
+                .forEach((d) => delete pxt.runner.mainPkg.deps[d]);
             await pxt.runner.mainPkg.host().downloadPackageAsync(pxt.runner.mainPkg, Object.keys(JSON.parse(projectJson[pxt.CONFIG_NAME]).dependencies));
             pxt.runner.mainPkg._editorPkg = { files: projectJson }; //.setFiles(projectJson);
             await pxt.runner.mainPkg.installAllAsync();
@@ -112,6 +115,7 @@
             // blocksInfo.blocks.map((b) => b.attributes.paramFieldEditor).filter((pfe) => !!pfe).forEach((pfe) =>
             //     Object.keys(pfe).filter((k) => pfe[k] === 'configInstance').forEach((k) => delete pfe[k])
             // );
+            pxt.blocks.cleanBlocks();
             pxt.blocks.initializeAndInject(blocksInfo);
             lastBlocksInfo = blocksInfo;
             return { opts, program, blocksInfo };
