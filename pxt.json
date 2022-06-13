@@ -1,6 +1,6 @@
 {
     "name": "handlingkit",
-    "version": "0.0.0",
+    "version": "1.12.33",
     "description": "",
     "dependencies": {
         "core": "*",
