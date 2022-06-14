@@ -97,7 +97,11 @@
                 });
             };
             pxt.editor.initEditorExtensionsAsync().then(() =>
-                pxt.Cloud.privateGetAsync(baseProjectId + '/text', true).then((projectJson) => baseProject = projectJson)
+                pxt.Cloud.privateGetAsync(baseProjectId + '/text', true)
+                .then((projectJson) => {
+                    baseProject = projectJson
+                    setupRunner(projectJson); // update base project
+                })
             ).then(loadProjects);
         });
 
@@ -107,8 +111,10 @@
             Object.keys(pxt.runner.mainPkg.deps).filter((d) => d !== 'this' && typeof pxt.runner.mainPkg.deps[d] === 'object')
                 .forEach((d) => delete pxt.runner.mainPkg.deps[d]);
             await pxt.runner.mainPkg.host().downloadPackageAsync(pxt.runner.mainPkg, Object.keys(JSON.parse(projectJson[pxt.CONFIG_NAME]).dependencies));
-            pxt.runner.mainPkg._editorPkg = { files: projectJson }; //.setFiles(projectJson);
+            const cloudheader = JSON.parse(projectJson['.cloudheader.json']);
+            pxt.runner.mainPkg._editorPkg = { files: projectJson, header: {targetVersion: cloudheader.targetVersion} }; //.setFiles(projectJson);
             await pxt.runner.mainPkg.installAllAsync();
+            tiger.upgradeViaTigerPolicy()
             const opts = await pxt.runner.mainPkg.getCompileOptionsAsync();
             const program = pxtc.getTSProgram(opts);
             const blocksInfo = pxtc.getBlocksInfo(pxtc.getApiInfo(program, opts.jres));
@@ -125,7 +131,7 @@
             const projects = document.getElementById('projects');
             projects.innerHTML = '';
             pxt.Cloud.privateGetAsync('list', true).then((res) => {
-                res.pkgs.filter((pkg) => pkg.header.baseConfig === baseProjectId).forEach((pkg) => {
+                res.pkgs.forEach((pkg) => {
                     const item = document.createElement('a');
                     item.classList.add('item');
                     item.text = pkg.header.name;
@@ -154,6 +160,7 @@
             template[".cloudheader.json"].id = id;
             template[".cloudheader.json"].baseConfig = baseProjectId;
             template[".cloudheader.json"].name = template[pxt.CONFIG_NAME].name = nameInput.value;
+            template[".cloudheader.json"].targetVersion = pxt.appTarget.versions.target
             template[pxt.CONFIG_NAME].dependencies.handlingkit = `workspace:${baseProjectId}`;
             Object.keys(template).forEach((key) => template[key] = JSON.stringify(template[key]));
             pxt.Cloud.privatePostAsync(id, template, true).then(() => nameInput.value = '')
