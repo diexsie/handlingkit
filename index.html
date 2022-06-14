@@ -100,7 +100,7 @@
                 pxt.Cloud.privateGetAsync(baseProjectId + '/text', true)
                 .then((projectJson) => {
                     baseProject = projectJson
-                    setupRunner(projectJson); // update base project
+                    return setupRunner(projectJson); // update base project
                 })
             ).then(loadProjects);
         });
