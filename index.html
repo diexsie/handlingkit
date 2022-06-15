@@ -192,7 +192,9 @@
             template[".cloudheader.json"].name = template[pxt.CONFIG_NAME].name = nameInput.value;
             template[".cloudheader.json"].targetVersion = pxt.appTarget.versions.target
             template[pxt.CONFIG_NAME].dependencies.handlingkit = `workspace:${baseProjectId}`;
-            Object.keys(template).forEach((key) => template[key] = JSON.stringify(template[key]));
+            Object.keys(template)
+             .filter((key) => key.endsWith('.json'))
+             .forEach((key) => template[key] = JSON.stringify(template[key]));
             pxt.Cloud.privatePostAsync(id, template, true).then(() => nameInput.value = '')
                 .then(loadProjects).then(() => openProject(id));
         }
