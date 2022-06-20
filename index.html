@@ -111,41 +111,11 @@
             Object.keys(pxt.runner.mainPkg.deps).filter((d) => d !== 'this' && typeof pxt.runner.mainPkg.deps[d] === 'object')
                 .forEach((d) => delete pxt.runner.mainPkg.deps[d]);
             await pxt.runner.mainPkg.host().downloadPackageAsync(pxt.runner.mainPkg, Object.keys(JSON.parse(projectJson[pxt.CONFIG_NAME]).dependencies));
-            let targetVersion = pxt.appTarget.versions.target;
-            if (projectJson['.cloudheader.json'].indexOf("baseConfig") === -1) { // => baseproject
-                // to force updating the base project. when importing baseProject via gitHub the targetVersion in cloudheader is always the latest pxt version
-                // and therefore not useable to determine update need => use targetVersion of pxt.json for baseProjects
-                const pxtJson = JSON.parse(projectJson['pxt.json']);
-                // currently baseProject is unversioned
-                if (pxtJson.version === '0.0.0' && pxtJson.targetVersion === undefined) {
-                    targetVersion = '1.12.0'; // use dummy version to enable tiger update policy
-                } else {
-                    // after update a targetVersion will be available.
-                    targetVersion = pxtJson.targetVersion;
-                }
-            } else {
-                // for child projects take the version from .cloudheader.json. new projects will be created with recent pxt version as targetVersion,
-                // but legacy projects do not have this info. but the new tiger backend will return the dummy value 1.12.0 for those versionless projects.
-                targetVersion = JSON.parse(projectJson['.cloudheader.json']).targetVersion
-            }
-
+            let targetVersion = JSON.parse(projectJson['.cloudheader.json']).targetVersion
             pxt.runner.mainPkg._editorPkg = { files: projectJson, header: {targetVersion: targetVersion} }; //.setFiles(projectJson);
             await pxt.runner.mainPkg.installAllAsync();
             let updated = await tiger.upgradeViaTigerPolicy()
             const opts = await pxt.runner.mainPkg.getCompileOptionsAsync();
-            // after successfull compilation the target versions must be updated and the patched files should be synced to backend
-            // to avoid further updating upon reloading the project
-            if (updated) {
-                if (projectJson['.cloudheader.json'].indexOf("baseConfig") === -1) {
-                    tiger.raiseTargetVersion('pxt.json');
-                    //sync base project back to server
-                    await pxt.Cloud.privatePostAsync(JSON.parse(projectJson['.cloudheader.json']).id, projectJson, true).catch(handleError);
-                }
-                else {
-                    tiger.raiseTargetVersion('.cloudheader.json');
-                    // sync of child process can be initiated via save button.
-                }
-            }
             const program = pxtc.getTSProgram(opts);
             const blocksInfo = pxtc.getBlocksInfo(pxtc.getApiInfo(program, opts.jres));
             // blocksInfo.blocks.map((b) => b.attributes.paramFieldEditor).filter((pfe) => !!pfe).forEach((pfe) =>
