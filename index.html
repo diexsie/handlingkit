@@ -100,7 +100,18 @@
                 pxt.Cloud.privateGetAsync(baseProjectId + '/text', true)
                 .then((projectJson) => {
                     baseProject = projectJson
-                    return setupRunner(projectJson); // update base project
+                    // Units are configured in the base project => updating base project is required
+                    // Known issue: the update does not work in case you have imported the base
+                    // project from github, because all imported projects from github will get the
+                    // latest (pxt.appTarget.versions.target) targetVersion in their generated
+                    // cloudheader.json by pxt.
+                    //
+                    // If integration projects like to use tiger.upgradeViaTigerPolicy() for the
+                    // base project, the cloudheader.json of the base project must contain
+                    // targerVersion:1.12.0, before calling tiger.upgradeViaTigerPolicy().
+                    // Instead of calling the upgrade method, it's also possible to add the necessary
+                    // changes manually to motion-config.json and motion-instances.ts.
+                    return setupRunner(projectJson);
                 })
             ).then(loadProjects);
         });
@@ -111,13 +122,23 @@
             Object.keys(pxt.runner.mainPkg.deps).filter((d) => d !== 'this' && typeof pxt.runner.mainPkg.deps[d] === 'object')
                 .forEach((d) => delete pxt.runner.mainPkg.deps[d]);
             await pxt.runner.mainPkg.host().downloadPackageAsync(pxt.runner.mainPkg, Object.keys(JSON.parse(projectJson[pxt.CONFIG_NAME]).dependencies));
-            let targetVersion = JSON.parse(projectJson['.cloudheader.json']).targetVersion
+            let targetVersion = JSON.parse(projectJson['.cloudheader.json']).targetVersion;
+
+            // Legacy projects are missing the targerVersion. This is a trick so that the migration
+            // process on the client still works for legacy projects.
+            if (targetVersion === undefined) {
+                targetVersion = "1.12.0";
+            }
+
             pxt.runner.mainPkg._editorPkg = { files: projectJson, header: {targetVersion: targetVersion} }; //.setFiles(projectJson);
             await pxt.runner.mainPkg.installAllAsync();
-            // Newer Tiger versions might change existing blocks or configs. Call this to check for outdated projects and in case peform the update.
+
+            // Newer Tiger versions might change existing blocks or configs. Call this to check for
+            // outdated projects and in case peform an update. E.g. from Tiger version 1.15.X kinematics
+            // and axis are supporting units and an axis can have the type linear or rotative.
             let upgradeResult = await tiger.upgradeViaTigerPolicy();
             if (upgradeResult.success === true ) {
-                // Persist updated project so that it get loaded again by loadProjects()
+                // Persist updated project, so that it gets loaded again by loadProjects()
                 await pxt.Cloud.privatePostAsync(JSON.parse(projectJson['.cloudheader.json']).id, projectJson, true).catch(handleError);
             }
 
@@ -137,7 +158,7 @@
             const projects = document.getElementById('projects');
             projects.innerHTML = '';
             pxt.Cloud.privateGetAsync('list', true).then((res) => {
-                res.pkgs.forEach((pkg) => {
+                res.pkgs.filter((pkg) => pkg.header.baseConfig === baseProjectId).forEach((pkg) => {
                     const item = document.createElement('a');
                     item.classList.add('item');
                     item.text = pkg.header.name;

@@ -1,9 +1,15 @@
 namespace motion {
-	config = {"axes":[{"limits":{"position":{"min":0,"max":0},"velocity":{"min":0,"max":0},"acceleration":{"min":0,"max":0},"torque":{"min":0,"max":0}},"axisParams":{"x":0,"y":0,"z":0,"xr":0,"yr":0,"zr":0},"id":"axis1","address":"axis1"},{"limits":{"position":{"min":0,"max":0},"velocity":{"min":0,"max":0},"acceleration":{"min":0,"max":0},"torque":{"min":0,"max":0}},"axisParams":{"x":0,"y":0,"z":0,"xr":0,"yr":0,"zr":0},"id":"axis2","address":"axis2"}],"kins":[],"points":[]};
+	config = {"axes":[{"type":0,"limits":{"position":{"min":0,"max":1000,"unit":"mm"},"velocity":{"min":-1000,"max":1000,"unit":"mm/min"},"acceleration":{"min":-100,"max":100,"unit":"m/s^2"},"torque":{"min":-100,"max":100,"unit":"Nm"}},"axisParams":{"x":0,"y":0,"z":0,"xr":0,"yr":0,"zr":0},"id":"axis1","address":"axis1"},{"type":0,"limits":{"position":{"min":0,"max":1000,"unit":"mm"},"velocity":{"min":-1000,"max":1000,"unit":"mm/min"},"acceleration":{"min":-100,"max":100,"unit":"m/s^2"},"torque":{"min":-100,"max":100,"unit":"Nm"}},"axisParams":{"x":0,"y":0,"z":0,"xr":0,"yr":0,"zr":0},"id":"axis2","address":"axis2"},{"type":0,"limits":{"position":{"min":0,"max":1000,"unit":"mm"},"velocity":{"min":-1000,"max":1000,"unit":"mm/min"},"acceleration":{"min":-100,"max":100,"unit":"m/s^2"},"torque":{"min":-100,"max":100,"unit":"Nm"}},"axisParams":{"x":0,"y":0,"z":0,"xr":0,"yr":0,"zr":0},"id":"axis3","address":"axis3"}],"kins":[{"limits":{"velocity":{"min":0,"max":6000,"unit":"mm/min"},"acceleration":{"min":0,"max":2,"unit":"m/s^2"}},"units":{"position":"mm","torque":"Nm"},"axes":[{"direction":0,"axis":"axis1","meaning":0},{"direction":0,"axis":"axis2","meaning":1},{"direction":0,"axis":"axis3","meaning":2}],"id":"Robot","address":"Robot"}],"points":[]};
+}
+namespace motion {
+
 	//% fixedInstance whenUsed
 	export const axis1 = motion.factory.createAxis('axis1', {"x":0,"y":0,"z":0,"xr":0,"yr":0,"zr":0}, undefined);
 	//% fixedInstance whenUsed
 	export const axis2 = motion.factory.createAxis('axis2', {"x":0,"y":0,"z":0,"xr":0,"yr":0,"zr":0}, undefined);
 	//% fixedInstance whenUsed
 	export const axis3 = motion.factory.createAxis('axis3', {"x":0,"y":0,"z":0,"xr":0,"yr":0,"zr":0}, undefined);
+	//% fixedInstance whenUsed
+	export const Robot = motion.factory.createKinematic('Robot', [axis1,axis2,axis3]);
+
 }
